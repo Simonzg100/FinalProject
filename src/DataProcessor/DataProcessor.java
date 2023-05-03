@@ -1,17 +1,24 @@
 package src.DataProcessor;
 
+import src.Book;
 import src.City;
+import src.WareHouse;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class DataProcessor {
+
+    private HashMap<String, City> myCityMap;
+    private ArrayList<WareHouse> myWareHouseList;
+    private ArrayList<Book> booksList;
 
     private static final double EARTH_R = 6371;
     public void parseCities() {
         try {
-            File f = new File("uscities.csv");
+            File f = new File("src/DataProcessor/uscities.csv");
             FileReader fr = new FileReader(f);
             BufferedReader br = new BufferedReader(fr);
             ArrayList<City> cities = new ArrayList<>();
@@ -31,6 +38,8 @@ public class DataProcessor {
                 cities.add(c);
             }
 
+            this.myCityMap = new HashMap<>();
+
             for (City city : cities) {
                 HashMap<City, Double> myMap = new HashMap<>();
                 for (City city1 : cities) {
@@ -38,6 +47,7 @@ public class DataProcessor {
                     myMap.put(city1, countDistance(city, city1));
                 }
                 city.setConnectingCities(myMap);
+                this.myCityMap.put(city.getName(), city);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,5 +69,56 @@ public class DataProcessor {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return (EARTH_R * c > 0) ? a : -a;
+    }
+
+    public void parseBooks() {
+        try {
+            File f = new File("src/DataProcessor/books_dataset.csv");
+            FileReader fr = new FileReader(f);
+            BufferedReader br = new BufferedReader(fr);
+            this.booksList = new ArrayList<>();
+            Random r = new Random();
+            String str = br.readLine();
+            while ((str = br.readLine()) != null) {
+                System.out.println(str);
+                String[] strArray = str.strip().split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+                for(int i = 0; i < strArray.length; i++){
+                    if(strArray[i].startsWith("\"")) strArray[i] = strArray[i].substring(1);
+                    if(strArray[i].endsWith("\"")) strArray[i] = strArray[i].substring(0, strArray[i].length() - 1);
+                    strArray[i] = strArray[i].strip().replaceAll("\"\"", "\"");
+                }
+                if (strArray.length != 11) continue;
+                Book b = new Book();
+                b.setUrl(strArray[0]);
+                b.setName(strArray[1]);
+                b.setAuthor(strArray[2]);
+                b.setPrice(Double.parseDouble(strArray[5]));
+                b.setCategory(strArray[9]);
+                b.setIsbn(strArray[8]);
+                this.randomizeBookStorage(b, r);
+                this.booksList.add(b);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void randomizeBookStorage(Book b, Random r) {
+        int locationNum = r.nextInt(3) + 1;
+        for (int i = 0; i < locationNum; i++) {
+            int num = r.nextInt(100) + 1;
+            this.myWareHouseList.get(r.nextInt(this.myWareHouseList.size())).storeBook(b, num);
+        }
+    }
+
+    public void initialization() {
+        this.parseCities();
+        this.myWareHouseList = new ArrayList<>();
+        for (City c : this.myCityMap.values()) {
+            WareHouse w = new WareHouse(c.getName());
+            this.myWareHouseList.add(w);
+        }
+        this.parseBooks();
     }
 }
