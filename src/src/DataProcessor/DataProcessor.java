@@ -1,8 +1,8 @@
-package project.DataProcessor;
+package src.DataProcessor;
 
-import project.Book;
-import project.City;
-import project.WareHouse;
+import src.Book;
+import src.City;
+import src.WareHouse;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class DataProcessor {
     private static final double EARTH_R = 6371;
     public void parseCities() {
         try {
-            File f = new File("project/DataProcessor/uscities.csv");
+            File f = new File("src/DataProcessor/uscities.csv");
             FileReader fr = new FileReader(f);
             BufferedReader br = new BufferedReader(fr);
             ArrayList<City> cities = new ArrayList<>();
@@ -73,7 +73,7 @@ public class DataProcessor {
 
     public void parseBooks() {
         try {
-            File f = new File("project/DataProcessor/books_dataset.csv");
+            File f = new File("src/DataProcessor/books_dataset.csv");
             FileReader fr = new FileReader(f);
             BufferedReader br = new BufferedReader(fr);
             this.booksList = new ArrayList<>();
