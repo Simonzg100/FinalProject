@@ -1,5 +1,14 @@
-import java.awt.print.Book;
-import java.io.*;
+package src.DataProcessor;
+
+import src.Book;
+import src.City;
+import src.Tuple;
+import src.WareHouse;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -13,7 +22,7 @@ public class DataProcessor {
     private static final double EARTH_R = 6371;
     public void parseCities() {
         try {
-            File f = new File("src/DataProcessor/uscities.csv");
+            File f = new File("src/src/DataProcessor/uscities.csv");
             FileReader fr = new FileReader(f);
             BufferedReader br = new BufferedReader(fr);
             ArrayList<City> cities = new ArrayList<>();
@@ -74,7 +83,7 @@ public class DataProcessor {
 
     public void parseBooks() {
         try {
-            File f = new File("src/DataProcessor/books_dataset.csv");
+            File f = new File("src/src/DataProcessor/books_dataset.csv");
             FileReader fr = new FileReader(f);
             BufferedReader br = new BufferedReader(fr);
             this.booksList = new ArrayList<>();
@@ -89,14 +98,12 @@ public class DataProcessor {
                 }
                 if (strArray.length != 11) continue;
                 Book b = new Book();
-
                 b.setUrl(strArray[0]);
                 b.setName(strArray[1]);
                 b.setAuthor(strArray[2]);
 //                b.setPrice(Double.parseDouble(strArray[5]));
                 b.setCategory(strArray[9]);
                 b.setIsbn(strArray[8]);
-
                 this.randomizeBookStorage(b, r);
                 this.booksList.add(b);
             }
