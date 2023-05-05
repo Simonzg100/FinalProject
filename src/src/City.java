@@ -8,7 +8,7 @@ public class City {
     private String[] zipcodes;
     private double longitude;
     private double latitude;
-    private HashMap<String, Tuple<City, Double>> connectingCities;
+    private HashMap<String, Tuple<City, Double> > connectingCities;
 
     public City() {
     }
@@ -60,4 +60,6 @@ public class City {
     public void setState(String state) {
         this.state = state;
     }
+
+
 }

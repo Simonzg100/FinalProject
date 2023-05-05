@@ -43,4 +43,7 @@ public class WareHouse {
             b.setWareHouseList(list);
         }
     }
+
+
+
 }

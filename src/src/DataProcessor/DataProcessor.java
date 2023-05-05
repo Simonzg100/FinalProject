@@ -44,6 +44,7 @@ public class DataProcessor {
                 c.setLongitude(Double.parseDouble(strArray[7].strip()));
                 c.setZipcodes(strArray[15].strip().split("\\s+"));
                 cities.add(c);
+
             }
 
             this.myCityMap = new HashMap<>();
