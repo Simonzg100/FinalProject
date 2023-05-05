@@ -8,7 +8,9 @@ public interface methods {
 
     public void deliverCities(ArrayList<Order> orders);
 
-    public void deliverWareHouse(ArrayList<Order> orders);
+    public void deliverFromOneWareHouse(ArrayList<Order> orders);
+
+    public List<List<WareHouse>> deliverFromMultiWareHouse(ArrayList<Order> orders);
 
     public void orderBooks(ArrayList<Order> orders);
     /**
@@ -18,9 +20,9 @@ public interface methods {
      */
     public String deliverBooksFromOneWareHouse(ArrayList<Order> orders);
 
-
     /**
-     *
+     * books are from more than 1 warehouse
+     * return the name of these warehouses.
      */
     public List<String> deliverBooksFromMultiWareHouse(ArrayList<Order> orders);
 }

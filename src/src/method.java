@@ -22,7 +22,7 @@ public class method implements methods{
     }
 
     @Override
-    public void deliverWareHouse(ArrayList<Order> orders) {
+    public void deliverFromOneWareHouse(ArrayList<Order> orders) {
         wareHouses = new HashSet<>();
         DataProcessor dp =  new DataProcessor();
 
@@ -53,7 +53,7 @@ public class method implements methods{
     @Override
     public String deliverBooksFromOneWareHouse(ArrayList<Order> orders) {
         deliverCities(orders);
-        deliverWareHouse(orders);
+        deliverFromOneWareHouse(orders);
         List<String[]> edges = new ArrayList<>();
         for (City city : cities) {
             HashMap<String, Tuple<City, Double>> connectingCities = city.getConnectingCities();
@@ -108,7 +108,7 @@ public class method implements methods{
 
     @Override
     public List<String> deliverBooksFromMultiWareHouse(ArrayList<Order> orders) {
-        List<List<WareHouse>> warehouseCombinations = deliverWareHouse2(orders);
+        List<List<WareHouse>> warehouseCombinations = deliverFromMultiWareHouse(orders);
         List<String> bestWarehouses = new ArrayList<>();
         double bestTotalDistance = Double.MAX_VALUE;
 
@@ -152,7 +152,6 @@ public class method implements methods{
         for (String[] edge : edges) {
             uf.add(edge[0]);
         }
-
         double totalWeight = 0;
         int edgeCount = 0;
 
@@ -166,13 +165,12 @@ public class method implements methods{
                 }
             }
         }
-
         return totalWeight;
     }
 
 
-
-    public List<List<WareHouse>> deliverWareHouse2(ArrayList<Order> orders) {
+    @Override
+    public List<List<WareHouse>> deliverFromMultiWareHouse(ArrayList<Order> orders) {
         orderBooks(orders);
         DataProcessor dp = new DataProcessor();
         ArrayList<WareHouse> myWareHouseList = dp.getMyWareHouseList();
