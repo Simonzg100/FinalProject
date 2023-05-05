@@ -15,14 +15,16 @@ public interface methods {
     public void orderBooks(ArrayList<Order> orders);
     /**
      * deliver books from one warehouse to all other cities.
-     * return the miles that the truck drives.
+     * return the best warehouse
      *
      */
     public String deliverBooksFromOneWareHouse(ArrayList<Order> orders);
 
     /**
      * books are from more than 1 warehouse
-     * return the name of these warehouses.
+     * return the best collection of these warehouses
      */
     public List<String> deliverBooksFromMultiWareHouse(ArrayList<Order> orders);
+
+
 }
