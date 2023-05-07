@@ -2,56 +2,70 @@ package src;
 
 import src.DataProcessor.DataProcessor;
 
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class method implements methods{
+public class Method implements IMethods {
 
     private HashSet<City> cities;
-    private HashSet <WareHouse> wareHouses;
+    private HashSet<Warehouse> warehouses;
+    private  HashSet<String> orderedBooks;
+    private DataProcessor dp;
 
-    private  HashSet<String> orderBooks;
+    public Method() {
+        this.dp = new DataProcessor();
+        this.dp.initialization();
+
+        this.cities = new HashSet<>();
+        this.warehouses = new HashSet<>();
+        this.orderedBooks = new HashSet<>();
+    }
 
     @Override
     public void deliverCities(ArrayList<Order> orders) {
-        this.cities = new HashSet<>();
+        HashMap<String, City> cityMap = this.dp.getMyCityMap();
+        HashMap<String, City> zipMap = new HashMap<>();
+        for (City c : cityMap.values()) {
+            for (String str : c.getZipcodes()) {
+                zipMap.put(str,c);
+            }
+        }
+
         for (Order order : orders) {
-            City city = order.getCityByZipCode();
+            City city = zipMap.get(order.getZipcode());
             cities.add(city);
         }
     }
 
     @Override
     public void deliverFromOneWareHouse(ArrayList<Order> orders) {
-        wareHouses = new HashSet<>();
-        DataProcessor dp =  new DataProcessor();
-
-
-        ArrayList<WareHouse> myWareHouseList = dp.getMyWareHouseList();
-        for (WareHouse wareHouse : myWareHouseList) {
+        ArrayList<Warehouse> myWarehouseList = this.dp.getMyWareHouseList();
+        for (Warehouse wareHouse : myWarehouseList) {
             HashMap<String, Integer> storageMap = wareHouse.getStorageMap();
             Set<String> strings = storageMap.keySet();
-            if (strings.containsAll(orderBooks)) {
-                wareHouses.add(wareHouse);
+            if (strings.containsAll(orderedBooks)) {
+                warehouses.add(wareHouse);
             }
         }
     }
 
     @Override
     public void orderBooks(ArrayList<Order> orders) {
-        this.orderBooks = new HashSet<>();
-        HashSet<String> orderBooks =  new HashSet<>();
         for (Order order : orders) {
             ArrayList<Book> books = order.getBookList();
             for (Book book : books) {
-                orderBooks.add(book.getIsbn());
+                this.orderedBooks.add(book.getIsbn());
             }
         }
     }
 
 
     @Override
-    public String deliverBooksFromOneWareHouse(ArrayList<Order> orders) {
+    public String deliverBooksFromOneWareHouse() {
+        Warehouse w = this.dp.getRandomWarehouse();
+        Random r = new Random();
+        ArrayList<Order> orders = this.dp.generateOrderFromOneWarehouse(w);
         deliverCities(orders);
         deliverFromOneWareHouse(orders);
         List<String[]> edges = new ArrayList<>();
@@ -62,14 +76,14 @@ public class method implements methods{
                 Tuple<City, Double> value = map.getValue();
                 Double right = value.getRight(); // distance
                 // create the graph.
-                edges.add(new String[] {city.getName(),name,Double.toString(right) });
+                edges.add(new String[] {city.getName(),name,Double.toString(right)});
             }
         }
 
         String bestWarehouse = null;
         double minTotalWeight = Double.MAX_VALUE;
 
-        for (WareHouse warehouse : wareHouses) {
+        for (Warehouse warehouse : warehouses) {
             List<String[]> warehouseEdges = new ArrayList<>(edges); // Clone the edges list
             String warehouseCity = warehouse.getCity();
             for (City city : cities) {
@@ -108,27 +122,27 @@ public class method implements methods{
 
     @Override
     public List<String> deliverBooksFromMultiWareHouse(ArrayList<Order> orders) {
-        List<List<WareHouse>> warehouseCombinations = deliverFromMultiWareHouse(orders);
+        List<List<Warehouse>> warehouseCombinations = deliverFromMultiWareHouse(orders);
         List<String> bestWarehouses = new ArrayList<>();
         double bestTotalDistance = Double.MAX_VALUE;
 
-        for (List<WareHouse> combination : warehouseCombinations) {
+        for (List<Warehouse> combination : warehouseCombinations) {
             List<String[]> edges = createEdges(combination);
             double totalDistance = calculateMST(combination.size(), edges);
 
             if (totalDistance < bestTotalDistance) {
                 bestTotalDistance = totalDistance;
-                bestWarehouses = combination.stream().map(WareHouse::getCity).collect(Collectors.toList());
+                bestWarehouses = combination.stream().map(Warehouse::getCity).collect(Collectors.toList());
             }
         }
 
         return bestWarehouses;
     }
 
-    private List<String[]> createEdges(List<WareHouse> combination) {
+    private List<String[]> createEdges(List<Warehouse> combination) {
         List<String[]> edges = new ArrayList<>();
 
-        for (WareHouse warehouse : combination) {
+        for (Warehouse warehouse : combination) {
             String warehouseCity = warehouse.getCity();
             for (City city : cities) {
                 HashMap<String, Tuple<City, Double>> connectingCities = city.getConnectingCities();
@@ -170,45 +184,42 @@ public class method implements methods{
 
 
     @Override
-    public List<List<WareHouse>> deliverFromMultiWareHouse(ArrayList<Order> orders) {
+    public List<List<Warehouse>> deliverFromMultiWareHouse(ArrayList<Order> orders) {
         orderBooks(orders);
-        DataProcessor dp = new DataProcessor();
-        ArrayList<WareHouse> myWareHouseList = dp.getMyWareHouseList();
-        List<List<WareHouse>> warehouseCombinations = new ArrayList<>();
-        List<WareHouse> currentCombination = new ArrayList<>();
-        findCombinations(warehouseCombinations, currentCombination, myWareHouseList, orderBooks, 0);
+        ArrayList<Warehouse> myWarehouseList = dp.getMyWareHouseList();
+        List<List<Warehouse>> warehouseCombinations = new ArrayList<>();
+        List<Warehouse> currentCombination = new ArrayList<>();
+        findCombinations(warehouseCombinations, currentCombination, myWarehouseList, orderedBooks, 0);
         return warehouseCombinations;
     }
 
-    private void findCombinations(List<List<WareHouse>> warehouseCombinations, List<WareHouse> currentCombination,
-                                  ArrayList<WareHouse> myWareHouseList, HashSet<String> orderBooks, int index) {
+    private void findCombinations(List<List<Warehouse>> warehouseCombinations, List<Warehouse> currentCombination,
+                                  ArrayList<Warehouse> myWarehouseList, HashSet<String> orderBooks, int index) {
         if (isSufficient(currentCombination, orderBooks)) {
             warehouseCombinations.add(new ArrayList<>(currentCombination));
             return;
         }
 
-        if (index >= myWareHouseList.size()) {
+        if (index >= myWarehouseList.size()) {
             return;
         }
 
         // With the current warehouse
-        WareHouse warehouse = myWareHouseList.get(index);
+        Warehouse warehouse = myWarehouseList.get(index);
         currentCombination.add(warehouse);
-        findCombinations(warehouseCombinations, currentCombination, myWareHouseList, orderBooks, index + 1);
+        findCombinations(warehouseCombinations, currentCombination, myWarehouseList, orderBooks, index + 1);
 
         // Without the current warehouse
         currentCombination.remove(currentCombination.size() - 1);
-        findCombinations(warehouseCombinations, currentCombination, myWareHouseList, orderBooks, index + 1);
+        findCombinations(warehouseCombinations, currentCombination, myWarehouseList, orderBooks, index + 1);
     }
 
-    private boolean isSufficient(List<WareHouse> currentCombination, HashSet<String> orderBooks) {
+    private boolean isSufficient(List<Warehouse> currentCombination, HashSet<String> orderBooks) {
         HashSet<String> coveredBooks = new HashSet<>();
-        for (WareHouse warehouse : currentCombination) {
+        for (Warehouse warehouse : currentCombination) {
             coveredBooks.addAll(warehouse.getStorageMap().keySet());
         }
         return coveredBooks.containsAll(orderBooks);
     }
-
-
 
 }

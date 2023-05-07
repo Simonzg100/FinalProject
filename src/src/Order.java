@@ -6,7 +6,11 @@ public class Order {
     private String id;
     private ArrayList<Book> bookList; // the number of books.
     private String[] address;
-    private int zipcode;
+    private String zipcode;
+
+    public Order() {
+        this.bookList = new ArrayList<>();
+    }
 
     public String getId() {
         return id;
@@ -32,18 +36,12 @@ public class Order {
         this.address = address;
     }
 
-    public int getZipcode() {
+    public String getZipcode() {
         return zipcode;
     }
 
-    public void setZipcode(int zipcode) {
+    public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
-
-
-    public City getCityByZipCode() {
-        return new City();
-    }
-
 
 }

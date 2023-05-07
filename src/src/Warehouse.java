@@ -3,11 +3,11 @@ package src;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class WareHouse {
+public class Warehouse {
     private String city;
     private HashMap<String, Integer> storageMap;
 
-    public WareHouse(String city) {
+    public Warehouse(String city) {
         this.city = city;
         this.storageMap = new HashMap<>();
     }
@@ -44,6 +44,26 @@ public class WareHouse {
             list.add(this.city);
             b.setWareHouseList(list);
         }
+    }
+
+    public boolean sellBook(Book b, int num) {
+        String isbn = b.getIsbn();
+        if (this.getStorageMap().get(isbn) < num) return false;
+        b.setStockQuantity(b.getStockQuantity() - num);
+
+        if (this.storageMap.containsKey(isbn)) {
+            num = this.storageMap.get(isbn) - num;
+            this.storageMap.remove(isbn);
+            if (num > 0) {
+                this.storageMap.put(isbn, num);
+            } else {
+                ArrayList<String> list = b.getWareHouseList();
+                list.remove(this.city);
+                b.setWareHouseList(list);
+            }
+        }
+
+        return true;
     }
 
 

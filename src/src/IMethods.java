@@ -1,16 +1,15 @@
 package src;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
-public interface methods {
+public interface IMethods {
 
     public void deliverCities(ArrayList<Order> orders);
 
     public void deliverFromOneWareHouse(ArrayList<Order> orders);
 
-    public List<List<WareHouse>> deliverFromMultiWareHouse(ArrayList<Order> orders);
+    public List<List<Warehouse>> deliverFromMultiWareHouse(ArrayList<Order> orders);
 
     public void orderBooks(ArrayList<Order> orders);
     /**
@@ -18,7 +17,7 @@ public interface methods {
      * return the best warehouse
      *
      */
-    public String deliverBooksFromOneWareHouse(ArrayList<Order> orders);
+    public String deliverBooksFromOneWareHouse();
 
     /**
      * books are from more than 1 warehouse

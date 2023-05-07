@@ -1,22 +1,19 @@
 package src.DataProcessor;
 
-import src.Book;
-import src.City;
-import src.Tuple;
-import src.WareHouse;
+import src.*;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class DataProcessor {
 
     private HashMap<String, City> myCityMap;
-    private ArrayList<WareHouse> myWareHouseList;
+    private ArrayList<Warehouse> myWarehouseList;
     private ArrayList<Book> booksList;
 
     private static final double EARTH_R = 6371;
@@ -43,6 +40,7 @@ public class DataProcessor {
                 c.setLatitude(Double.parseDouble(strArray[6].strip()));
                 c.setLongitude(Double.parseDouble(strArray[7].strip()));
                 c.setZipcodes(strArray[15].strip().split("\\s+"));
+                if (c.getName().equals("honolulu")) continue;
                 cities.add(c);
 
             }
@@ -118,16 +116,56 @@ public class DataProcessor {
         int locationNum = r.nextInt(3) + 1;
         for (int i = 0; i < locationNum; i++) {
             int num = r.nextInt(100) + 1;
-            this.myWareHouseList.get(r.nextInt(this.myWareHouseList.size())).storeBook(b, num);
+            this.myWarehouseList.get(r.nextInt(this.myWarehouseList.size())).storeBook(b, num);
         }
+    }
+
+    public ArrayList<Order> generateOrderFromOneWarehouse(Warehouse w){
+        ArrayList<Order> orders = new ArrayList<>();
+        Random r = new Random();
+
+        int num = r.nextInt(100) + 50;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String dateString = sdf.format(new Date());
+        DecimalFormat df = new DecimalFormat("0000");
+
+        HashMap<String, Book> warehouseBooks = new HashMap<>();
+        ArrayList<String> isbnList = new ArrayList<>();
+        String[] zipList = this.myCityMap.get(w.getCity()).getZipcodes();
+
+        for(Book book : this.booksList) {
+            if (w.getStorageMap().keySet().contains(book.getIsbn())) {
+                warehouseBooks.put(book.getIsbn(), book);
+                isbnList.add(book.getIsbn());
+            }
+        }
+
+        for (int i = 0; i < num; i++) {
+            Order o = new Order();
+            String orderNum = df.format(i);
+            o.setId(w.getCity() + dateString + orderNum);
+            Book b = warehouseBooks.get(isbnList.get(r.nextInt(isbnList.size())));
+            ArrayList<Book> bl = o.getBookList();
+            bl.add(b);
+            o.setBookList(bl);
+            o.setZipcode(zipList[r.nextInt(zipList.length)]);
+            if (w.sellBook(b, 1))  orders.add(o);
+        }
+
+        return orders;
+    }
+
+    public Warehouse getRandomWarehouse() {
+        Random r = new Random();
+        return this.myWarehouseList.get(r.nextInt(this.myWarehouseList.size()));
     }
 
     public void initialization() {
         this.parseCities();
-        this.myWareHouseList = new ArrayList<>();
+        this.myWarehouseList = new ArrayList<>();
         for (City c : this.myCityMap.values()) {
-            WareHouse w = new WareHouse(c.getName());
-            this.myWareHouseList.add(w);
+            Warehouse w = new Warehouse(c.getName());
+            this.myWarehouseList.add(w);
         }
         this.parseBooks();
     }
@@ -136,8 +174,8 @@ public class DataProcessor {
         return myCityMap;
     }
 
-    public ArrayList<WareHouse> getMyWareHouseList() {
-        return myWareHouseList;
+    public ArrayList<Warehouse> getMyWareHouseList() {
+        return myWarehouseList;
     }
 
     public ArrayList<Book> getBooksList() {

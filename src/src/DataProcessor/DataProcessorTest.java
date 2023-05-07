@@ -1,7 +1,8 @@
 package src.DataProcessor;
 
 import src.City;
-import src.WareHouse;
+import src.GoogleMapsGenerator;
+import src.Warehouse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,9 +23,12 @@ class DataProcessorTest {
     void initialization() {
         DataProcessor dp = new DataProcessor();
         dp.initialization();
-        ArrayList<WareHouse> wl = dp.getMyWareHouseList();
-        for (WareHouse w : wl) {
-            System.out.println(w.getStorageMap().size());
-        }
+        ArrayList<Warehouse> wl = dp.getMyWareHouseList();
+//        for (Warehouse w : wl) {
+//            System.out.println(w.getStorageMap().size());
+//        }
+
+        GoogleMapsGenerator gmg = new GoogleMapsGenerator();
+        gmg.generatePresentation(new ArrayList<>(dp.getMyCityMap().values()));
     }
 }
