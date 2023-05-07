@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display Path and Names on Google Map</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIrqqR5a8-SBGKJfc-dnHwHqkroJwY1IU&callback=initMap" async defer></script>
+  <script>
+    var map;
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 37.8333, lng: -98.5833},
+        zoom: 5
+      });
+
+      var locations = [
+        {lat: 36.1284, lng: -95.9042, name: 'tulsa'},
+{lat: 32.7936, lng: -96.7662, name: 'dallas'},
+{lat: 27.9942, lng: -82.4451, name: 'tampa'},
+{lat: 39.7797, lng: -84.1998, name: 'dayton'},
+{lat: 35.3529, lng: -119.0359, name: 'bakersfield'},
+{lat: 39.3051, lng: -76.6144, name: 'baltimore'},
+{lat: 33.6095, lng: -117.6550, name: 'mission viejo'},
+{lat: 35.8325, lng: -78.6435, name: 'raleigh'},
+{lat: 37.9722, lng: -122.0016, name: 'concord'},
+{lat: 25.7839, lng: -80.2102, name: 'miami'},
+{lat: 39.7621, lng: -104.8759, name: 'denver'},
+{lat: 35.4676, lng: -97.5136, name: 'oklahoma city'},
+{lat: 40.6501, lng: -73.9496, name: 'brooklyn'},
+{lat: 45.5372, lng: -122.6500, name: 'portland'},
+{lat: 35.1053, lng: -106.6464, name: 'albuquerque'},
+{lat: 28.4772, lng: -81.3369, name: 'orlando'},
+{lat: 37.3019, lng: -121.8486, name: 'san jose'},
+{lat: 47.6211, lng: -122.3244, name: 'seattle'},
+{lat: 34.1139, lng: -118.4068, name: 'los angeles'},
+{lat: 41.8373, lng: -87.6862, name: 'chicago'},
+{lat: 32.7811, lng: -97.3473, name: 'fort worth'},
+{lat: 37.5295, lng: -77.4756, name: 'richmond'},
+{lat: 33.9381, lng: -117.3948, name: 'riverside'},
+{lat: 40.7777, lng: -111.9306, name: 'salt lake city'},
+{lat: 36.2333, lng: -115.2654, name: 'las vegas'},
+{lat: 35.2080, lng: -80.8304, name: 'charlotte'},
+{lat: 38.5667, lng: -121.4683, name: 'sacramento'},
+{lat: 40.8501, lng: -73.8662, name: 'bronx'},
+{lat: 41.2627, lng: -96.0522, name: 'omaha'},
+{lat: 26.2273, lng: -98.2471, name: 'mcallen'},
+{lat: 41.8230, lng: -71.4187, name: 'providence'},
+{lat: 34.0376, lng: -80.9037, name: 'columbia'},
+{lat: 40.5961, lng: -75.4756, name: 'allentown'},
+{lat: 27.9550, lng: -80.6627, name: 'palm bay'},
+{lat: 38.1663, lng: -85.6485, name: 'louisville'},
+{lat: 38.9047, lng: -77.0163, name: 'washington'},
+{lat: 42.1155, lng: -72.5395, name: 'springfield'},
+{lat: 33.7627, lng: -84.4224, name: 'atlanta'},
+{lat: 27.3386, lng: -82.5431, name: 'sarasota'},
+{lat: 39.9862, lng: -82.9850, name: 'columbus'},
+{lat: 36.7831, lng: -119.7941, name: 'fresno'},
+{lat: 42.3188, lng: -71.0846, name: 'boston'},
+{lat: 41.3112, lng: -72.9246, name: 'new haven'},
+{lat: 32.1545, lng: -110.8782, name: 'tucson'},
+{lat: 30.4418, lng: -91.1310, name: 'baton rouge'},
+{lat: 36.1715, lng: -86.7843, name: 'nashville'},
+{lat: 30.3322, lng: -81.6749, name: 'jacksonville'},
+{lat: 29.4658, lng: -98.5253, name: 'san antonio'},
+{lat: 39.7771, lng: -86.1458, name: 'indianapolis'},
+{lat: 36.7335, lng: -76.0435, name: 'virginia beach'},
+{lat: 33.5277, lng: -86.7987, name: 'birmingham'},
+{lat: 32.8153, lng: -79.9628, name: 'charleston'},
+{lat: 42.6664, lng: -73.7987, name: 'albany'},
+{lat: 26.6446, lng: -81.9956, name: 'cape coral'},
+{lat: 40.0077, lng: -75.1339, name: 'philadelphia'},
+{lat: 33.4017, lng: -111.7180, name: 'mesa'},
+{lat: 29.7863, lng: -95.3889, name: 'houston'},
+{lat: 30.3004, lng: -97.7522, name: 'austin'},
+{lat: 42.9620, lng: -85.6562, name: 'grand rapids'},
+{lat: 39.1413, lng: -84.5061, name: 'cincinnati'},
+{lat: 42.3834, lng: -83.1024, name: 'detroit'},
+{lat: 44.9635, lng: -93.2678, name: 'minneapolis'},
+{lat: 37.7562, lng: -122.4430, name: 'san francisco'},
+{lat: 41.4767, lng: -81.6804, name: 'cleveland'},
+{lat: 40.4396, lng: -79.9762, name: 'pittsburgh'},
+{lat: 32.8312, lng: -117.1225, name: 'san diego'},
+{lat: 35.1046, lng: -89.9773, name: 'memphis'},
+{lat: 41.1918, lng: -73.1953, name: 'bridgeport'},
+{lat: 35.9692, lng: -83.9496, name: 'knoxville'},
+{lat: 42.9016, lng: -78.8487, name: 'buffalo'},
+{lat: 41.7661, lng: -72.6834, name: 'hartford'},
+{lat: 40.7834, lng: -73.9662, name: 'manhattan'},
+{lat: 40.6943, lng: -73.9249, name: 'new york'},
+{lat: 43.0642, lng: -87.9673, name: 'milwaukee'},
+{lat: 41.0798, lng: -81.5219, name: 'akron'},
+{lat: 38.6358, lng: -90.2451, name: 'st. louis'},
+{lat: 33.5722, lng: -112.0891, name: 'phoenix'},
+{lat: 43.1680, lng: -77.6162, name: 'rochester'},
+{lat: 41.2278, lng: -111.9682, name: 'ogden'},
+{lat: 40.2457, lng: -111.6457, name: 'provo'},
+{lat: 40.7498, lng: -73.7976, name: 'queens'},
+{lat: 39.1239, lng: -94.5541, name: 'kansas city'},
+{lat: 38.8674, lng: -104.7606, name: 'colorado springs'},
+{lat: 30.0687, lng: -89.9288, name: 'new orleans'},
+{lat: 31.8479, lng: -106.4309, name: 'el paso'},
+
+      ];
+
+      locations.forEach(function(location) {
+             var marker = new google.maps.Marker({
+               position: new google.maps.LatLng(location.lat, location.lng),
+               map: map
+             });
+
+             var infoWindow = new google.maps.InfoWindow({
+               content: location.name
+             });
+
+             marker.addListener('click', function() {
+               infoWindow.open(map, marker);
+             });
+           });
+         }
+  </script>
+  <style>
+    #map {
+      height: 100%;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+</body>
+</html>

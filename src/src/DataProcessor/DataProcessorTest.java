@@ -29,6 +29,15 @@ class DataProcessorTest {
 //        }
 
         GoogleMapsGenerator gmg = new GoogleMapsGenerator();
-        gmg.generatePresentation(new ArrayList<>(dp.getMyCityMap().values()));
+        gmg.generatePresentation(new ArrayList<>(dp.getMyCityMap().values()),"all_cities_parsed", false);
+        ArrayList<City> tree = new ArrayList<>();
+        HashMap<String,City> map = dp.getMyCityMap();
+        tree.add(map.get("new york"));
+        tree.add(map.get("minneapolis"));
+        tree.add(map.get("colorado springs"));
+        tree.add(map.get("salt lake city"));
+        tree.add(map.get("portland"));
+        tree.add(map.get("san jose"));
+        gmg.generatePresentation(tree,"tree_example", true);
     }
 }
