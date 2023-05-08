@@ -16,6 +16,15 @@ public class Book {
         this.wareHouseList = new ArrayList<>();
     }
 
+
+    public Book(String name, String author, String category, int stockQuantity) {
+        this.name = name;
+        this.author = author;
+        this.category = category;
+        this.stockQuantity = stockQuantity;
+        this.wareHouseList = new ArrayList<>();
+    }
+
     public String getName() {
         return name;
     }
