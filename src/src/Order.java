@@ -1,6 +1,6 @@
 package src;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Order {
     private String id;
@@ -43,5 +43,34 @@ public class Order {
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
+
+//    public boolean orderBooks(HashMap<String, City> myCityMap) {
+//        ArrayList<ArrayList<City>> cities = new ArrayList<>();
+//
+//        City endCity;
+//        boolean found = false;
+//        for (City c : myCityMap.values()) {
+//            for (String zip : c.getZipcodes()) {
+//                if (zip.equals(this.zipcode)) {
+//                    endCity = c;
+//                    break;
+//                }
+//            }
+//            if (found) break;
+//        }
+//
+//        for (Book book : this.bookList) {
+//            ArrayList<City> bookStorage = new ArrayList<>();
+//            for (String cityName : book.getWareHouseList()) {
+//                bookStorage.add(myCityMap.get(cityName));
+//            }
+//            cities.add(bookStorage);
+//        }
+//
+//        for (int i = 0; i < cities.size(); i++) {
+//
+//        }
+//
+//    }
 
 }

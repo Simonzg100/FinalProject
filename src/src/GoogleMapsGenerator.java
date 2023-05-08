@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class GoogleMapsGenerator {
 
     public void generatePresentation(ArrayList<City> cities, String filename, boolean line) {
-        String apiKey = "AIzaSyBIrqqR5a8-SBGKJfc-dnHwHqkroJwY1IU"; // Replace with your Google Maps API Key
+        String apiKey = "AIzaSyBIrqqR5a8-SBGKJfc-dnHwHqkroJwY1IU";
         String fileName = filename + ".html";
         String fileNameWithLane = filename + "_car_lane.html";
 
@@ -24,6 +24,34 @@ public class GoogleMapsGenerator {
         } catch (IOException e) {
             System.err.println("Error generating Google Maps HTML file: " + e.getMessage());
         }
+    }
+
+    public void generatePresentation(ArrayList<City> cities, ArrayList<Tuple<City, City>> tuples, String filename) {
+        String apiKey = "AIzaSyBIrqqR5a8-SBGKJfc-dnHwHqkroJwY1IU";
+        String fileName = filename + "_tree.html";
+
+        try {
+            generateGoogleMapsHTMLTree(apiKey, cityPairsToJson(tuples), cities, fileName);
+            System.out.println("Generated Google Maps HTML file: " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error generating Google Maps HTML file: " + e.getMessage());
+        }
+    }
+
+    public String cityPairsToJson(ArrayList<Tuple<City, City>> cityPairs) {
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("[");
+
+        for (int i = 0; i < cityPairs.size(); i++) {
+            jsonBuilder.append("[\"" + cityPairs.get(i).getLeft().getName() + "\", \"" + cityPairs.get(i).getRight().getName() + "\"]");
+            if (i < cityPairs.size() - 1) {
+                jsonBuilder.append(", ");
+            }
+        }
+
+        jsonBuilder.append("]");
+
+        return jsonBuilder.toString();
     }
 
     public void generateGoogleMapsHTMLWithLine(String apiKey, ArrayList<City> cities, String fileName) throws IOException {
@@ -244,6 +272,96 @@ public class GoogleMapsGenerator {
                 </body>
                 </html>
                 """, apiKey, locationData.toString());
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            writer.write(htmlContent);
+        }
+    }
+
+    public void generateGoogleMapsHTMLTree(String apiKey, String cityPairs, ArrayList<City> cities, String fileName) throws IOException {
+        StringBuilder locationData = new StringBuilder();
+        for (City c : cities) {
+            locationData.append("'" + c.getName() + "': {lat: " + c.getLatitude() + ", lng: " + c.getLongitude() + "},\n");
+        }
+
+        String htmlContent = String.format("""
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <title>Display Path and Names on Google Map</title>
+              <script src="https://maps.googleapis.com/maps/api/js?key=%s&callback=initMap" async defer></script>
+              <script>
+                var map;
+
+                function initMap() {
+                  map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: 37.8333, lng: -98.5833},
+                    zoom: 5
+                  });
+                  
+                  var cityPairsJson = '%s';
+                  
+                  var cityPairs = JSON.parse(cityPairsJson);
+
+                  var locations = {
+                    %s
+                  };
+
+              function connectLocations(location1, location2) {
+                      var pathCoordinates = [
+                        new google.maps.LatLng(locations[location1].lat, locations[location1].lng),
+                        new google.maps.LatLng(locations[location2].lat, locations[location2].lng)
+                      ];
+              
+                      var path = new google.maps.Polyline({
+                        path: pathCoordinates,
+                        geodesic: true,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2
+                      });
+              
+                      path.setMap(map);
+                    }
+              
+                    cityPairs.forEach(function(pair) {
+                      pair.forEach(function(city) {
+                        if (!locations[city].marker) {
+                          locations[city].marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(locations[city].lat, locations[city].lng),
+                            map: map
+                          });
+
+                          var infoWindow = new google.maps.InfoWindow({
+                            content: city
+                          });
+
+                          locations[city].marker.addListener('click', function() {
+                            infoWindow.open(map, locations[city].marker);
+                          });
+                        }
+                      });
+
+                      connectLocations(pair[0], pair[1]);
+                    });
+                  }
+              </script>
+              <style>
+                #map {
+                  height: 100%%;
+                }
+                html, body {
+                  height: 100%%;
+                  margin: 0;
+                  padding: 0;
+                }
+              </style>
+            </head>
+            <body>
+              <div id="map"></div>
+            </body>
+            </html>
+            """, apiKey, cityPairs, locationData.toString());
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             writer.write(htmlContent);

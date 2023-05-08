@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display Path and Names on Google Map</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIrqqR5a8-SBGKJfc-dnHwHqkroJwY1IU&callback=initMap" async defer></script>
+  <script>
+    var map;
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 37.8333, lng: -98.5833},
+        zoom: 5
+      });
+
+      var cityPairsJson = '[["hartford", "bridgeport"], ["bridgeport", "queens"], ["hartford", "albany"], ["albany", "rochester"], ["rochester", "cleveland"], ["cleveland", "columbus"], ["queens", "richmond"], ["columbus", "milwaukee"], ["richmond", "charleston"], ["charleston", "orlando"], ["orlando", "cape coral"], ["charleston", "birmingham"], ["milwaukee", "kansas city"], ["kansas city", "oklahoma city"], ["oklahoma city", "denver"], ["denver", "las vegas"], ["las vegas", "fresno"], ["las vegas", "san diego"], ["fresno", "seattle"]]';
+
+      var cityPairs = JSON.parse(cityPairsJson);
+
+      var locations = {
+        'cape coral': {lat: 26.6446, lng: -81.9956},
+'rochester': {lat: 43.168, lng: -77.6162},
+'queens': {lat: 40.7498, lng: -73.7976},
+'fresno': {lat: 36.7831, lng: -119.7941},
+'richmond': {lat: 37.5295, lng: -77.4756},
+'denver': {lat: 39.7621, lng: -104.8759},
+'milwaukee': {lat: 43.0642, lng: -87.9673},
+'albany': {lat: 42.6664, lng: -73.7987},
+'columbus': {lat: 39.9862, lng: -82.985},
+'oklahoma city': {lat: 35.4676, lng: -97.5136},
+'san diego': {lat: 32.8312, lng: -117.1225},
+'charleston': {lat: 32.8153, lng: -79.9628},
+'hartford': {lat: 41.7661, lng: -72.6834},
+'seattle': {lat: 47.6211, lng: -122.3244},
+'birmingham': {lat: 33.5277, lng: -86.7987},
+'kansas city': {lat: 39.1239, lng: -94.5541},
+'orlando': {lat: 28.4772, lng: -81.3369},
+'bridgeport': {lat: 41.1918, lng: -73.1953},
+'las vegas': {lat: 36.2333, lng: -115.2654},
+'cleveland': {lat: 41.4767, lng: -81.6804},
+
+      };
+
+  function connectLocations(location1, location2) {
+          var pathCoordinates = [
+            new google.maps.LatLng(locations[location1].lat, locations[location1].lng),
+            new google.maps.LatLng(locations[location2].lat, locations[location2].lng)
+          ];
+
+          var path = new google.maps.Polyline({
+            path: pathCoordinates,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+          });
+
+          path.setMap(map);
+        }
+
+        cityPairs.forEach(function(pair) {
+          pair.forEach(function(city) {
+            if (!locations[city].marker) {
+              locations[city].marker = new google.maps.Marker({
+                position: new google.maps.LatLng(locations[city].lat, locations[city].lng),
+                map: map
+              });
+
+              var infoWindow = new google.maps.InfoWindow({
+                content: city
+              });
+
+              locations[city].marker.addListener('click', function() {
+                infoWindow.open(map, locations[city].marker);
+              });
+            }
+          });
+
+          connectLocations(pair[0], pair[1]);
+        });
+      }
+  </script>
+  <style>
+    #map {
+      height: 100%;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+</body>
+</html>

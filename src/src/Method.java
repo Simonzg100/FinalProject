@@ -10,7 +10,7 @@ public class Method implements IMethods {
 
     private HashSet<City> cities;
     private HashSet<Warehouse> warehouses;
-    private  HashSet<String> orderedBooks;
+    private HashSet<String> orderedBooks;
     private DataProcessor dp;
 
     public Method() {
@@ -60,6 +60,126 @@ public class Method implements IMethods {
         }
     }
 
+    public ArrayList<Tuple<City, City>> deliverFromSingleWarehouse() {
+        Warehouse w = this.dp.getRandomWarehouse();
+        Random r = new Random();
+        ArrayList<Order> orders = this.dp.generateOrderFromOneWarehouse(w);
+        deliverCities(orders);
+
+        City startingCity = this.dp.getMyCityMap().get(w.getCity());
+
+
+        ArrayList<City> path = new ArrayList<>();
+
+
+        path.add(startingCity);
+        this.cities.add(startingCity);
+
+        ArrayList<Tuple<City, City>> tuples = this.findMST(path, new ArrayList<>());
+        return tuples;
+
+//        for (City c : this.cities) {
+//            path.add(c);
+//        }
+//        if (!path.contains(startingCity)) path.add(startingCity);
+//
+//
+//
+//
+//
+//        Collections.sort(path, new Comparator<City>() {
+//            @Override
+//            public int compare(City o1, City o2) {
+//                int longitude1 = (int) (o1.getLongitude() * 1000);
+//                int longitude2 = (int) (o2.getLongitude() * 1000);
+//                int latitude1 = (int) (o1.getLatitude() * 1000);
+//                int latitude2 = (int) (o2.getLatitude() * 1000);
+//                if (longitude1 == longitude2) {
+//                    return latitude1 - latitude2;
+//                } else {
+//                    return longitude1 - longitude2;
+//                }
+//            }
+//        });
+//
+//        double avgLong = 0;
+//        double avgLat = 0;
+//        for (City city : path) {
+//            avgLong += city.getLongitude();
+//            avgLat += city.getLatitude();
+//        }
+//        avgLat = avgLat / path.size();
+//        avgLong = avgLong / path.size();
+//
+    }
+
+    public ArrayList<City> deliverFromSingleWarehouseRoute() {
+        Warehouse w = this.dp.getRandomWarehouse();
+        Random r = new Random();
+        ArrayList<Order> orders = this.dp.generateOrderFromOneWarehouse(w);
+        deliverCities(orders);
+
+        City startingCity = this.dp.getMyCityMap().get(w.getCity());
+
+
+        ArrayList<City> path = new ArrayList<>();
+
+
+        path.add(startingCity);
+        this.cities.add(startingCity);
+
+        for (City c : this.cities) {
+            path.add(c);
+        }
+        if (!path.contains(startingCity)) path.add(startingCity);
+
+
+        Collections.sort(path, new Comparator<City>() {
+            @Override
+            public int compare(City o1, City o2) {
+                int longitude1 = (int) (o1.getLongitude() * 1000);
+                int longitude2 = (int) (o2.getLongitude() * 1000);
+                int latitude1 = (int) (o1.getLatitude() * 1000);
+                int latitude2 = (int) (o2.getLatitude() * 1000);
+                if (longitude1 == longitude2) {
+                    return latitude1 - latitude2;
+                } else {
+                    return longitude1 - longitude2;
+                }
+            }
+        });
+
+        return path;
+
+    }
+
+    private ArrayList<Tuple<City, City>> findMST(ArrayList<City> list, ArrayList<Tuple<City, City>> tuples) {
+        if (list.size() == this.cities.size()) return tuples;
+        City minCity = null;
+        City startCity = null;
+        double minDis = 0;
+        for (City c1 : list) {
+            for (City c2 : this.cities) {
+                if (list.contains(c2)) continue;
+                if (minCity == null) {
+                    startCity = c1;
+                    minCity = c2;
+                    minDis = c1.getConnectingCities().get(c2.getName()).getRight();
+                    continue;
+                }
+                if (c2.countDistance(c1) < minDis) {
+                    startCity = c1;
+                    minCity = c2;
+                    minDis = c1.getConnectingCities().get(c2.getName()).getRight();
+                }
+            }
+        }
+        list.add(minCity);
+        tuples.add(new Tuple<>(startCity, minCity));
+        return findMST(list, tuples);
+    }
+
+
 
     @Override
     public String deliverBooksFromOneWareHouse() {
@@ -68,7 +188,9 @@ public class Method implements IMethods {
         ArrayList<Order> orders = this.dp.generateOrderFromOneWarehouse(w);
         deliverCities(orders);
         deliverFromOneWareHouse(orders);
+
         List<String[]> edges = new ArrayList<>();
+
         for (City city : cities) {
             HashMap<String, Tuple<City, Double>> connectingCities = city.getConnectingCities();
             for (Map.Entry<String, Tuple<City, Double>> map : connectingCities.entrySet()) {
@@ -122,7 +244,7 @@ public class Method implements IMethods {
 
     @Override
     public List<String> deliverBooksFromMultiWareHouse(ArrayList<Order> orders) {
-        List<List<Warehouse>> warehouseCombinations = deliverFromMultiWareHouse(orders);
+        List<List<Warehouse>> warehouseCombinations = deliverFromMultiWareHouse();
         List<String> bestWarehouses = new ArrayList<>();
         double bestTotalDistance = Double.MAX_VALUE;
 
@@ -184,7 +306,8 @@ public class Method implements IMethods {
 
 
     @Override
-    public List<List<Warehouse>> deliverFromMultiWareHouse(ArrayList<Order> orders) {
+    public List<List<Warehouse>> deliverFromMultiWareHouse() {
+        ArrayList<Order> orders = this.dp.generateOrderWithMultipleBooks();
         orderBooks(orders);
         ArrayList<Warehouse> myWarehouseList = dp.getMyWareHouseList();
         List<List<Warehouse>> warehouseCombinations = new ArrayList<>();
@@ -222,4 +345,7 @@ public class Method implements IMethods {
         return coveredBooks.containsAll(orderBooks);
     }
 
+    public HashSet<City> getCities() {
+        return cities;
+    }
 }

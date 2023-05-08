@@ -9,7 +9,7 @@ public interface IMethods {
 
     public void deliverFromOneWareHouse(ArrayList<Order> orders);
 
-    public List<List<Warehouse>> deliverFromMultiWareHouse(ArrayList<Order> orders);
+    public List<List<Warehouse>> deliverFromMultiWareHouse();
 
     public void orderBooks(ArrayList<Order> orders);
     /**

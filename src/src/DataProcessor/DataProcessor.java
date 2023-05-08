@@ -124,14 +124,13 @@ public class DataProcessor {
         ArrayList<Order> orders = new ArrayList<>();
         Random r = new Random();
 
-        int num = r.nextInt(100) + 50;
+        int num = r.nextInt(30) + 10;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         String dateString = sdf.format(new Date());
         DecimalFormat df = new DecimalFormat("0000");
 
         HashMap<String, Book> warehouseBooks = new HashMap<>();
         ArrayList<String> isbnList = new ArrayList<>();
-        String[] zipList = this.myCityMap.get(w.getCity()).getZipcodes();
 
         for(Book book : this.booksList) {
             if (w.getStorageMap().keySet().contains(book.getIsbn())) {
@@ -142,13 +141,15 @@ public class DataProcessor {
 
         for (int i = 0; i < num; i++) {
             Order o = new Order();
-            String orderNum = df.format(i);
-            o.setId(w.getCity() + dateString + orderNum);
             Book b = warehouseBooks.get(isbnList.get(r.nextInt(isbnList.size())));
             ArrayList<Book> bl = o.getBookList();
             bl.add(b);
             o.setBookList(bl);
+            City c = this.getRandomCity();
+            String[] zipList = c.getZipcodes();
             o.setZipcode(zipList[r.nextInt(zipList.length)]);
+            String orderNum = df.format(i);
+            o.setId(c.getName() + dateString + orderNum);
             if (w.sellBook(b, 1))  orders.add(o);
         }
 
@@ -158,6 +159,41 @@ public class DataProcessor {
     public Warehouse getRandomWarehouse() {
         Random r = new Random();
         return this.myWarehouseList.get(r.nextInt(this.myWarehouseList.size()));
+    }
+
+    public City getRandomCity() {
+        Random r = new Random();
+        return (City) this.myCityMap.values().toArray()[r.nextInt(this.myCityMap.size())];
+    }
+
+    public  ArrayList<Order> generateOrderWithMultipleBooks(){
+        ArrayList<Order> orders = new ArrayList<>();
+        Random r = new Random();
+        int num = r.nextInt(500) + 100;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String dateString = sdf.format(new Date());
+        DecimalFormat df = new DecimalFormat("0000");
+
+        for (int i = 0; i < num; i++) {
+            Order o = new Order();
+            ArrayList<Book> bl = o.getBookList();
+            int bookNum = r.nextInt(5) + 2;
+            for (int j = 0; j < bookNum; j++) {
+                Book b = this.booksList.get(r.nextInt(this.booksList.size()));
+                bl.add(b);
+            }
+            o.setBookList(bl);
+            City c = this.getRandomCity();
+            String[] zipList = c.getZipcodes();
+            o.setZipcode(zipList[r.nextInt(zipList.length)]);
+            String orderNum = df.format(i);
+            o.setId(c.getName() + dateString + orderNum);
+
+
+            //仓库出书还不知道 assume 全部够
+            orders.add(o);
+        }
+        return orders;
     }
 
     public void initialization() {
