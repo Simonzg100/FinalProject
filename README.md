@@ -77,7 +77,13 @@ The program will be able to search through a large database of books, ensuring t
   <img width="600" alt="Screenshot 2023-05-08 at 11 29 07 PM" src="https://user-images.githubusercontent.com/117859291/236986584-19a7d2e9-2994-462c-bfe9-c8f4ffb99de0.png">.  
 The autocomplete function is a feature of the book search program that helps users find books more efficiently. As the user types their search query into the search bar, the autocomplete function will suggest potential search terms based on the user's input.  
 For example, if the user starts typing "Harr", the autocomplete function may suggest "Harry Potter" as a potential search term. This can help the user quickly find what they are looking for without having to type out the full title or author name.  
-The autocomplete function is designed to work with all search criteria, including book title, author name, and category. It uses an algorithm that matches the user's input to relevant search terms in the database, making it a powerful tool for navigating through large sets of data.  
+The autocomplete function is designed to work with all search criteria, including book title, author name, and category. It uses an algorithm that matches the user's input to relevant search terms in the database, making it a powerful tool for navigating through large sets of data.
+
+### Autocorrect Suggestion
+  <img width="600" alt="Screenshot 2023-05-09 at 2 11 18 AM" src="https://user-images.githubusercontent.com/117859291/237009195-279764f1-1ceb-4dbf-9685-e7e58c6c39d8.png"> <img width="600" alt="Screenshot 2023-05-09 at 2 11 51 AM" src="https://user-images.githubusercontent.com/117859291/237009270-793bad94-e934-408d-90ee-ad94270b007b.png">
+
+  The search engine also give a leineint autocorrect suggestion. 
+
   
 ### Random Generate Orders
 One such scenario is the ability to randomly generate online book orders and simulate the delivery process in real life.  
