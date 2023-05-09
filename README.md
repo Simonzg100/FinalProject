@@ -70,8 +70,7 @@ Make some of the warehouse  on diverging nodes as dispatch center (interchange c
   
 Search panel as followed: 
 
- <img width="600" alt="Screenshot 2023-05-09 at 1 07 52 AM" src="https://user-images.githubusercontent.com/45669402/237034730-ef2d5ca0-ea99-4ce3-9be8-f9dbffc59d91.png">
-<img width="600" alt="Screenshot 2023-05-09 at 1 07 28 AM" src="https://user-images.githubusercontent.com/45669402/237034755-71f317b2-0ba4-4a03-91d3-4968a024d02e.png">
+ <img width="600" alt="Screenshot 2023-05-09 at 1 07 52 AM" src="https://user-images.githubusercontent.com/45669402/237034730-ef2d5ca0-ea99-4ce3-9be8-f9dbffc59d91.png"> <img width="600" alt="Screenshot 2023-05-09 at 1 07 28 AM" src="https://user-images.githubusercontent.com/45669402/237034755-71f317b2-0ba4-4a03-91d3-4968a024d02e.png">
 
 
 
