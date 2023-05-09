@@ -629,7 +629,7 @@ public class AutocompleteGUI
                 int textLen = text.length();
                 // clear the previous match
                 matches = new ArrayList<ITerm>();
-                matches = auto.getSuggestions(text, 1);
+                matches = auto.getSuggestions(text, 0);
                 
 
 //                 Collections

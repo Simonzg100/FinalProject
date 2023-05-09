@@ -5,8 +5,11 @@ import java.util.HashMap;
 public class City {
 
     private static final double EARTH_R = 6371;
-    public static final double AVG_LONGITUDE = -98.5833;
-    public static final double AVG_LATITUDE = 37.8333;
+//    public static final double AVG_LONGITUDE = -98.5833;
+//    public static final double AVG_LATITUDE = 37.8333;
+
+    public static double AVG_LONGITUDE;
+    public static double AVG_LATITUDE;
     private String name;
     private String state;
     private String[] zipcodes;
