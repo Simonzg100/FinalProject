@@ -1,8 +1,8 @@
-package src.Autocomplete_1;
+package src.BookSearchEngine;
 
 import src.Book;
-
 import java.util.Comparator;
+
 
 public class Term implements Comparable<Term> {
     private Book book;
@@ -22,6 +22,7 @@ public class Term implements Comparable<Term> {
     public int getWeight() {
         return book.getStockQuantity();
     }
+
 
     public static Comparator<Term> byReverseWeightOrder() {
         return new Comparator<Term>() {
