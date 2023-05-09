@@ -67,22 +67,14 @@ Make some of the warehouse  on diverging nodes as dispatch center (interchange c
  The dataprocessor is a sophisticated tool that has been developed to parse through a massive dataset of over 250,000 book records from Amazon and various large cities in America.  
     
 ### Product Search 
-Search panel as followed:  
-  <img width="600" alt="Screenshot 2023-05-08 at 11 14 38 PM" src="https://user-images.githubusercontent.com/117859291/236984828-54c4a78f-29a9-4daa-a62a-a4a035d7ddc5.png"> <img width="600" alt="Screenshot 2023-05-08 at 11 24 10 PM" src="https://user-images.githubusercontent.com/117859291/236985982-0e2e152a-825f-4083-8f66-6a48f42ca3b2.png">  
-The program is a search engine that allows users to look up books based on their title, author, and category. Users can input any combination of these search criteria, and the program will return a list of matching books along with their corresponding information.  
-For each book in the search results, the program will display its title, author name, and category.   
+  
+Search panel as followed:  <img width="600" alt="Screenshot 2023-05-09 at 12 54 56 AM" src="https://user-images.githubusercontent.com/45669402/237033226-3622e41a-fcda-4a93-8192-05a232321a80.png">
+<img width="600" alt="Screenshot 2023-05-09 at 12 55 39 AM" src="https://user-images.githubusercontent.com/45669402/237033259-a998753f-6772-4bba-8940-863e52f79ac2.png">
+
+The program is a search engine that allows users to look up books based on their title, author. Users can input any combination of these search criteria, and the program will return a list of matching books along with their corresponding information.  
+For each book in the search results, the program will display its title, author name, and category and link for the book.   
 The program will be able to search through a large database of books, ensuring that users have access to a wide range of options. It will also have a user-friendly interface that makes it easy for users to enter their search criteria and navigate through the search results.  
 
-### Autocomplete Function 
-  <img width="600" alt="Screenshot 2023-05-08 at 11 29 07 PM" src="https://user-images.githubusercontent.com/117859291/236986584-19a7d2e9-2994-462c-bfe9-c8f4ffb99de0.png">.  
-The autocomplete function is a feature of the book search program that helps users find books more efficiently. As the user types their search query into the search bar, the autocomplete function will suggest potential search terms based on the user's input.  
-For example, if the user starts typing "Harr", the autocomplete function may suggest "Harry Potter" as a potential search term. This can help the user quickly find what they are looking for without having to type out the full title or author name.  
-The autocomplete function is designed to work with all search criteria, including book title, author name, and category. It uses an algorithm that matches the user's input to relevant search terms in the database, making it a powerful tool for navigating through large sets of data.
-
-### Autocorrect Suggestion
-  <img width="600" alt="Screenshot 2023-05-09 at 2 11 18 AM" src="https://user-images.githubusercontent.com/117859291/237009195-279764f1-1ceb-4dbf-9685-e7e58c6c39d8.png"> <img width="600" alt="Screenshot 2023-05-09 at 2 11 51 AM" src="https://user-images.githubusercontent.com/117859291/237009270-793bad94-e934-408d-90ee-ad94270b007b.png">
-
-  The search engine also give a leineint autocorrect suggestion. 
 
   
 ### Random Generate Orders
