@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display Path and Names on Google Map</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIrqqR5a8-SBGKJfc-dnHwHqkroJwY1IU&callback=initMap" async defer></script>
+  <script>
+    var map;
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 37.8333, lng: -98.5833},
+        zoom: 5
+      });
+
+      var cityPairsJson = '[["fresno", "bakersfield"], ["fresno", "san jose"], ["san jose", "concord"], ["concord", "sacramento"], ["bakersfield", "phoenix"], ["phoenix", "tucson"], ["tucson", "el paso"], ["phoenix", "provo"], ["provo", "ogden"], ["provo", "colorado springs"], ["sacramento", "portland"], ["colorado springs", "tulsa"], ["tulsa", "kansas city"], ["tulsa", "fort worth"], ["kansas city", "chicago"], ["chicago", "louisville"], ["louisville", "akron"], ["akron", "cleveland"], ["akron", "baltimore"], ["baltimore", "philadelphia"], ["philadelphia", "new haven"], ["new haven", "springfield"], ["baltimore", "raleigh"], ["raleigh", "charlotte"], ["charlotte", "atlanta"], ["atlanta", "palm bay"], ["palm bay", "cape coral"]]';
+
+      var cityPairs = JSON.parse(cityPairsJson);
+
+      var locations = {
+        'las vegas': {lat: 36.2333, lng: -115.2654},
+'palm bay': {lat: 27.955, lng: -80.6627},
+'baltimore': {lat: 39.3051, lng: -76.6144},
+'portland': {lat: 45.5372, lng: -122.65},
+'ogden': {lat: 41.2278, lng: -111.9682},
+'phoenix': {lat: 33.5722, lng: -112.0891},
+'springfield': {lat: 42.1155, lng: -72.5395},
+'bakersfield': {lat: 35.3529, lng: -119.0359},
+'san jose': {lat: 37.3019, lng: -121.8486},
+'raleigh': {lat: 35.8325, lng: -78.6435},
+'tulsa': {lat: 36.1284, lng: -95.9042},
+'el paso': {lat: 31.8479, lng: -106.4309},
+'cape coral': {lat: 26.6446, lng: -81.9956},
+'chicago': {lat: 41.8373, lng: -87.6862},
+'atlanta': {lat: 33.7627, lng: -84.4224},
+'tucson': {lat: 32.1545, lng: -110.8782},
+'provo': {lat: 40.2457, lng: -111.6457},
+'concord': {lat: 37.9722, lng: -122.0016},
+'cleveland': {lat: 41.4767, lng: -81.6804},
+'kansas city': {lat: 39.1239, lng: -94.5541},
+'charlotte': {lat: 35.208, lng: -80.8304},
+'fresno': {lat: 36.7831, lng: -119.7941},
+'sacramento': {lat: 38.5667, lng: -121.4683},
+'louisville': {lat: 38.1663, lng: -85.6485},
+'new haven': {lat: 41.3112, lng: -72.9246},
+'fort worth': {lat: 32.7811, lng: -97.3473},
+'colorado springs': {lat: 38.8674, lng: -104.7606},
+'philadelphia': {lat: 40.0077, lng: -75.1339},
+'akron': {lat: 41.0798, lng: -81.5219},
+
+      };
+
+  function connectLocations(location1, location2) {
+          var pathCoordinates = [
+            new google.maps.LatLng(locations[location1].lat, locations[location1].lng),
+            new google.maps.LatLng(locations[location2].lat, locations[location2].lng)
+          ];
+
+          var path = new google.maps.Polyline({
+            path: pathCoordinates,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+          });
+
+          path.setMap(map);
+        }
+
+        cityPairs.forEach(function(pair) {
+          pair.forEach(function(city) {
+            if (!locations[city].marker) {
+              locations[city].marker = new google.maps.Marker({
+                position: new google.maps.LatLng(locations[city].lat, locations[city].lng),
+                map: map
+              });
+
+              var infoWindow = new google.maps.InfoWindow({
+                content: city
+              });
+
+              locations[city].marker.addListener('click', function() {
+                infoWindow.open(map, locations[city].marker);
+              });
+            }
+          });
+
+          connectLocations(pair[0], pair[1]);
+        });
+      }
+  </script>
+  <style>
+    #map {
+      height: 100%;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+</body>
+</html>
