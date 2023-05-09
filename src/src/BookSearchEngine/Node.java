@@ -1,15 +1,26 @@
-package src.Autocomplete_1;
+package src.BookSearchEngine;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import src.Book;
 
+/**
+ * Represent a node in Trie structure
+ * used for book search engine
+ */
 public class Node {
     public Map<Character, Node> children;
     private ArrayList<Term> term;
 
+
+
+    public Node() {
+        children = new HashMap<>();
+        this.term = new ArrayList<>();
+    }
 
     public Node(Book book) {
         children = new HashMap<>();
@@ -27,15 +38,15 @@ public class Node {
         return this.term;
     }
 
-    public Node() {
-        children = new HashMap<>();
-        this.term = new ArrayList<>();
-    }
-
     public void addTerm(Term term) {
         this.term.add(term);
     }
 
+    /**
+     *
+     * @param letter
+     * @return the child node corresponding to the given character.
+     */
     public Node getNodeAfter(char letter) {
         return children.get(letter);
     }
@@ -45,6 +56,9 @@ public class Node {
         this.children.put(letter, n);
     }
 
+    /**
+     * @return the map of children nodes.
+     */
     public Map<Character, Node> getChildren() {
         return children;
     }
