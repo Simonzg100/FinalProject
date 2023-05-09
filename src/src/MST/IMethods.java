@@ -28,7 +28,7 @@ public interface IMethods {
      * books are from more than 1 warehouse
      * return the best collection of these warehouses
      */
-    public int findMSTForMultiWareHouse(ArrayList<Order> orders, int n);
+    public int findMSTForMultiWareHouse(List<City> cities, ArrayList<Order> orders);
 
-
+    public ArrayList<City> deliverFromSingleWarehouseRoute();
 }

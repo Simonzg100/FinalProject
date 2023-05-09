@@ -2,10 +2,8 @@ package src.MST;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import src.City;
-import src.GoogleMapsGenerator;
-import src.Order;
-import src.Warehouse;
+import src.*;
+import src.DataProcessor.DataProcessor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -51,24 +49,32 @@ class MethodTest {
     }
 
     @Test
-    void deliverBooksFromOneWareHouse() {
+    void findBestWarehouseForMST() {
         Method m = new Method();
 
         GoogleMapsGenerator gmg = new GoogleMapsGenerator();
 
         HashSet<Warehouse> warehouses = m.delWareHouse(orders);
+
         HashSet<City> cities = m.deliverCities(orders);
         ArrayList<City> cityArrayList = new ArrayList<>();
                     System.out.println(cities.size());
         Warehouse bestWarehouseForMST = m.findBestWarehouseForMST(warehouses, orders);
-        City city = new City();
-        city.setName(bestWarehouseForMST.getCity());
-        cityArrayList.add(city);
+        ArrayList<Tuple<City, City>> mstEdges = m.getMSTEdges();
 
-//        gmg.generatePresentation(cityArrayList, list,"single_deliver_example");
+        City wareHouseCity = m.getDp().getMyCityMap().get(bestWarehouseForMST.getCity());
+        cityArrayList.add(wareHouseCity);
+        for (City city1 : cities) {
+            cityArrayList.add(city1);
+        }
+
+        for (City city1 : cityArrayList) {
+            System.out.println(city1.getName());
+        }
+        gmg.generatePresentation(cityArrayList, mstEdges,"single_deliver_example2");
 
 
-        gmg.generatePresentation(cityArrayList,"single_deliver_example_route2", true);
+//        gmg.generatePresentation(cityArrayList,"single_deliver_example_route2", true);
     }
 
     @Test
@@ -78,9 +84,27 @@ class MethodTest {
         List<City> randomWarehousesCities = m.getRandomWarehousesCities(warehouseArrayList, 2);
         System.out.println(randomWarehousesCities.size());
 
-        int mstForMultiWareHouse = m.findMSTForMultiWareHouse(orders, 2);
+        int mstForMultiWareHouse = m.findMSTForMultiWareHouse(randomWarehousesCities, orders);
         System.out.println(mstForMultiWareHouse);
+        ArrayList<City> cityArrayList = new ArrayList<>();
+        HashSet<City> cities = m.deliverCities(orders);
+        for (City city : cities) {
+            cityArrayList.add(city);
+        }
+        for (City randomWarehousesCity : randomWarehousesCities) {
+            cities.add(randomWarehousesCity);
+        }
 
-//        assertTrue(mstForMultiWareHouse !=0);
+
+
+        assertTrue(mstForMultiWareHouse !=0);
+    }
+
+    @Test
+    void deliverFromSingleWarehouseRoute(){
+        ArrayList<City> cities = m.deliverFromSingleWarehouseRoute();
+        GoogleMapsGenerator gmg = new GoogleMapsGenerator();
+
+        gmg.generatePresentation(cities,"single_deliver_example3",true);
     }
 }
