@@ -21,7 +21,6 @@ class BookSearchEngineTest {
 
         List<Book> expected = new ArrayList<>();
         expected.add(new Book("1984", "George Orwell", "Fiction", 8));
-        //expected.add(new Book("The Great Gatsby", "F. Scott Fitzgerald", "Fiction", 5));
 
         List<Book> actual = bookSearchEngine.search("19", Term.Type.NAME);
 
@@ -55,7 +54,7 @@ class BookSearchEngineTest {
         List<Book> expected = new ArrayList<>();
         expected.add(new Book("To Kill a Mockingbird", "Harper Lee", "Fiction", 10));
 
-        List<Book> actual = bookSearchEngine.search("h", Term.Type.AUTHOR);
+        List<Book> actual = bookSearchEngine.search("Harper Lee", Term.Type.AUTHOR);
 
         assertEquals(expected.size(), actual.size());
         for(int i = 0; i < actual.size(); i++) {
@@ -65,27 +64,6 @@ class BookSearchEngineTest {
         }
     }
 
-//    @org.junit.jupiter.api.Test
-//    void testSearchByCategory() {
-//        List<Book> books = new ArrayList<>();
-//        books.add(new Book("To Kill a Mockingbird", "Harper Lee", "Fiction", 10));
-//        books.add(new Book("The Great Gatsby", "F. Scott Fitzgerald", "Fiction", 5));
-//        books.add(new Book("1984", "George Orwell", "Fiction", 8));
-//        BookSearchEngine bookSearchEngine = new BookSearchEngine((ArrayList<Book>) books);
-//
-//        List<Book> expected = new ArrayList<>();
-//        expected.add(new Book("1984", "George Orwell", "Fiction", 8));
-//        expected.add(new Book("The Great Gatsby", "F. Scott Fitzgerald", "Fiction", 5));
-//        expected.add(new Book("To Kill a Mockingbird", "Harper Lee", "Fiction", 10));
-//
-//        List<Book> actual = bookSearchEngine.search("f", Term.Type.CATEGORY);
-//        assertEquals(expected.size(), actual.size());
-//
-//        assertEquals(actual.get(0).getName(), "To Kill a Mockingbird");
-//        assertEquals(actual.get(1).getName(), "1984");
-//        assertEquals(actual.get(2).getName(), "The Great Gatsby");
-//
-//    }
 
     @org.junit.jupiter.api.Test
     void testSearchEmptyQuery() {
