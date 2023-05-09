@@ -84,4 +84,12 @@ One such scenario is the ability to randomly generate online book orders and sim
 By generating a large number of these orders, the dataprocessor can provide valuable insights into how delivery paths are determined and what factors play a role in the decision-making process.     
   
 ### Path Programming
-  <img width="600" alt="Screenshot 2023-05-09 at 12 05 59 AM" src="https://user-images.githubusercontent.com/117859291/236991311-fa556e26-d605-4e69-9cfe-ccf637038758.png"> <img width="600" alt="Screenshot 2023-05-09 at 12 08 51 AM" src="https://user-images.githubusercontent.com/117859291/236991689-d2bc4965-846d-4ff6-aca0-eb2555f7570e.png"> <img width="600" alt="Screenshot 2023-05-09 at 12 07 54 AM" src="https://user-images.githubusercontent.com/117859291/236991562-3c374bbb-22db-43ba-9daf-9009889ed2e1.png"> <img width="600" alt="Screenshot 2023-05-09 at 12 13 09 AM" src="https://user-images.githubusercontent.com/117859291/236992232-4a5663fc-d532-433a-9a32-eee4f295fb7a.png">
+  <img width="600" alt="Screenshot 2023-05-09 at 12 05 59 AM" src="https://user-images.githubusercontent.com/117859291/236991311-fa556e26-d605-4e69-9cfe-ccf637038758.png"> <img width="600" alt="Screenshot 2023-05-09 at 12 08 51 AM" src="https://user-images.githubusercontent.com/117859291/236991689-d2bc4965-846d-4ff6-aca0-eb2555f7570e.png"> <img width="600" alt="Screenshot 2023-05-09 at 12 07 54 AM" src="https://user-images.githubusercontent.com/117859291/236991562-3c374bbb-22db-43ba-9daf-9009889ed2e1.png"> <img width="600" alt="Screenshot 2023-05-09 at 12 13 09 AM" src="https://user-images.githubusercontent.com/117859291/236992232-4a5663fc-d532-433a-9a32-eee4f295fb7a.png">.   
+  he Method class is a critical component of the book delivery system, as it uses several advanced pathfinding algorithms to determine the most efficient distribution routes for book orders. By comparing different pathfinding methods, the Method class is able to generate insights into the best ways to optimize delivery routes and minimize delivery times.  
+Using a variety of pathfinding algorithms, such as Dijkstra's algorithm or the A* algorithm, the Method class can calculate the most efficient path between delivery points. It considers a range of factors such as traffic patterns, distance, and delivery driver availability to determine the best possible route for each order.  
+
+### Google Map API
+  For display
+  
+### GUI 
+  For display
