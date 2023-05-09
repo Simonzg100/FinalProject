@@ -5,7 +5,7 @@ import src.DataProcessor.DataProcessor;
 
 import java.util.*;
 
-public class Method implements IMethods {
+public class CalculateMST implements ICalCulateMST {
 
     private HashSet<City> cities;
     private HashSet<Warehouse> warehouses;
@@ -15,7 +15,7 @@ public class Method implements IMethods {
     public DataProcessor getDp() {
         return dp;
     }
-    public Method() {
+    public CalculateMST() {
         this.dp = new DataProcessor();
         this.dp.initialization();
 
@@ -71,18 +71,11 @@ public class Method implements IMethods {
         for (Warehouse warehouse : warehouseList) {
             deliverCities(orders);
             ArrayList<City> c = new ArrayList<>(this.cities);
-
             City startingCity = this.dp.getMyCityMap().get(warehouse.getCity());
-            if (startingCity == null) {
-                System.out.println("Bug !!");
-            }
             ArrayList<City> path = new ArrayList<>();
             path.add(startingCity);
             c.add(startingCity);
-
             this.mstEdges = findMST(path, new ArrayList<>(), c);
-
-            System.out.println(mstEdges.size());
             double totalDistance = 0;
             for (Tuple<City, City> edge : mstEdges) {
                 totalDistance += edge.getLeft().getConnectingCities().get(edge.getRight().getName()).getRight();
@@ -124,8 +117,6 @@ public class Method implements IMethods {
         if (startCity != null) {
             tuples.add(new Tuple<>(startCity, minCity));
         }
-
-
         return findMST(list, tuples,cities);
     }
 

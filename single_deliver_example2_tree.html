@@ -12,32 +12,42 @@
         zoom: 5
       });
 
-      var cityPairsJson = '[["fresno", "concord"], ["concord", "san francisco"], ["fresno", "los angeles"], ["los angeles", "albuquerque"], ["albuquerque", "fort worth"], ["fort worth", "kansas city"], ["kansas city", "omaha"], ["omaha", "milwaukee"], ["milwaukee", "louisville"], ["louisville", "knoxville"], ["louisville", "pittsburgh"], ["pittsburgh", "rochester"], ["rochester", "allentown"], ["allentown", "new york"], ["new york", "new haven"], ["allentown", "richmond"], ["knoxville", "jacksonville"], ["jacksonville", "palm bay"], ["palm bay", "sarasota"]]';
+      var cityPairsJson = '[["fresno", "bakersfield"], ["bakersfield", "riverside"], ["riverside", "san diego"], ["fresno", "concord"], ["riverside", "las vegas"], ["las vegas", "phoenix"], ["las vegas", "provo"], ["provo", "salt lake city"], ["concord", "seattle"], ["provo", "omaha"], ["omaha", "kansas city"], ["kansas city", "tulsa"], ["kansas city", "st. louis"], ["st. louis", "chicago"], ["chicago", "grand rapids"], ["grand rapids", "detroit"], ["detroit", "dayton"], ["dayton", "cincinnati"], ["detroit", "buffalo"], ["buffalo", "albany"], ["albany", "springfield"], ["springfield", "new haven"], ["springfield", "boston"], ["new haven", "richmond"], ["richmond", "raleigh"], ["raleigh", "columbia"], ["columbia", "orlando"], ["orlando", "miami"], ["tulsa", "austin"], ["austin", "mcallen"]]';
 
       var cityPairs = JSON.parse(cityPairsJson);
 
       var locations = {
         'dayton': {lat: 39.7797, lng: -84.1998},
-'fort worth': {lat: 32.7811, lng: -97.3473},
-'omaha': {lat: 41.2627, lng: -96.0522},
-'sarasota': {lat: 27.3386, lng: -82.5431},
-'kansas city': {lat: 39.1239, lng: -94.5541},
-'albuquerque': {lat: 35.1053, lng: -106.6464},
-'new haven': {lat: 41.3112, lng: -72.9246},
-'pittsburgh': {lat: 40.4396, lng: -79.9762},
-'new york': {lat: 40.6943, lng: -73.9249},
-'palm bay': {lat: 27.955, lng: -80.6627},
-'los angeles': {lat: 34.1139, lng: -118.4068},
-'knoxville': {lat: 35.9692, lng: -83.9496},
-'milwaukee': {lat: 43.0642, lng: -87.9673},
-'fresno': {lat: 36.7831, lng: -119.7941},
-'concord': {lat: 37.9722, lng: -122.0016},
-'san francisco': {lat: 37.7562, lng: -122.443},
-'rochester': {lat: 43.168, lng: -77.6162},
+'detroit': {lat: 42.3834, lng: -83.1024},
+'orlando': {lat: 28.4772, lng: -81.3369},
+'albany': {lat: 42.6664, lng: -73.7987},
+'raleigh': {lat: 35.8325, lng: -78.6435},
 'richmond': {lat: 37.5295, lng: -77.4756},
-'jacksonville': {lat: 30.3322, lng: -81.6749},
-'louisville': {lat: 38.1663, lng: -85.6485},
-'allentown': {lat: 40.5961, lng: -75.4756},
+'salt lake city': {lat: 40.7777, lng: -111.9306},
+'seattle': {lat: 47.6211, lng: -122.3244},
+'columbia': {lat: 34.0376, lng: -80.9037},
+'phoenix': {lat: 33.5722, lng: -112.0891},
+'provo': {lat: 40.2457, lng: -111.6457},
+'boston': {lat: 42.3188, lng: -71.0846},
+'springfield': {lat: 42.1155, lng: -72.5395},
+'new haven': {lat: 41.3112, lng: -72.9246},
+'st. louis': {lat: 38.6358, lng: -90.2451},
+'omaha': {lat: 41.2627, lng: -96.0522},
+'dayton': {lat: 39.7797, lng: -84.1998},
+'buffalo': {lat: 42.9016, lng: -78.8487},
+'san diego': {lat: 32.8312, lng: -117.1225},
+'miami': {lat: 25.7839, lng: -80.2102},
+'las vegas': {lat: 36.2333, lng: -115.2654},
+'chicago': {lat: 41.8373, lng: -87.6862},
+'cincinnati': {lat: 39.1413, lng: -84.5061},
+'austin': {lat: 30.3004, lng: -97.7522},
+'concord': {lat: 37.9722, lng: -122.0016},
+'kansas city': {lat: 39.1239, lng: -94.5541},
+'riverside': {lat: 33.9381, lng: -117.3948},
+'tulsa': {lat: 36.1284, lng: -95.9042},
+'bakersfield': {lat: 35.3529, lng: -119.0359},
+'mcallen': {lat: 26.2273, lng: -98.2471},
+'grand rapids': {lat: 42.962, lng: -85.6562},
 
       };
 

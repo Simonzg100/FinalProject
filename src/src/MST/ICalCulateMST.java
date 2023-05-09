@@ -5,11 +5,10 @@ import src.Order;
 import src.Warehouse;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-public interface IMethods {
+public interface ICalCulateMST {
 
     public HashSet<City> deliverCities(ArrayList<Order> orders);
 

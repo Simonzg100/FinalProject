@@ -3,16 +3,14 @@ package src.MST;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import src.*;
-import src.DataProcessor.DataProcessor;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MethodTest {
-    Method m = new Method();
+class CalculateMSTTest {
+    CalculateMST m = new CalculateMST();
     ArrayList<Order> orders;
 
 
@@ -24,33 +22,33 @@ class MethodTest {
     @Test
     void deliverCities() {
         HashSet<City> cities = m.deliverCities(orders);
-        for (City city : cities) {
-            System.out.println(city.getName());
-        }
+//        for (City city : cities) {
+//            System.out.println(city.getName());
+//        }
         assertNotNull(cities);
     }
 
     @Test
     void deliverFromOneWareHouse() {
         HashSet<Warehouse> warehouses = m.delWareHouse(orders);
-        for (Warehouse warehouse : warehouses) {
-            System.out.println(warehouse.getCity());
-        }
+//        for (Warehouse warehouse : warehouses) {
+//            System.out.println(warehouse.getCity());
+//        }
         assertNotNull(warehouses);
     }
 
     @Test
     void orderBooks() {
         HashSet<String> books = m.orderBooks(orders);
-        for (String book : books) {
-            System.out.println(book);
-        }
+//        for (String book : books) {
+//            System.out.println(book);
+//        }
         assertNotNull(books);
     }
 
     @Test
     void findBestWarehouseForMST() {
-        Method m = new Method();
+        CalculateMST m = new CalculateMST();
 
         GoogleMapsGenerator gmg = new GoogleMapsGenerator();
 
@@ -58,7 +56,6 @@ class MethodTest {
 
         HashSet<City> cities = m.deliverCities(orders);
         ArrayList<City> cityArrayList = new ArrayList<>();
-                    System.out.println(cities.size());
         Warehouse bestWarehouseForMST = m.findBestWarehouseForMST(warehouses, orders);
         ArrayList<Tuple<City, City>> mstEdges = m.getMSTEdges();
 
@@ -67,36 +64,33 @@ class MethodTest {
         for (City city1 : cities) {
             cityArrayList.add(city1);
         }
-
-        for (City city1 : cityArrayList) {
-            System.out.println(city1.getName());
-        }
-        gmg.generatePresentation(cityArrayList, mstEdges,"single_deliver_example2");
-
-
-//        gmg.generatePresentation(cityArrayList,"single_deliver_example_route2", true);
+        assertNotNull(mstEdges);
+        assertNotNull(cityArrayList);
+        gmg.generatePresentation(cityArrayList, mstEdges,"single_deliver_example5");
     }
 
     @Test
     void findMSTForMultiWareHouse() {
+        ArrayList<City> cityArrayList = new ArrayList<>();
+        GoogleMapsGenerator gmg = new GoogleMapsGenerator();
         HashSet<Warehouse> warehouses = m.delWareHouse(orders);
         ArrayList<Warehouse> warehouseArrayList =  new ArrayList<>(warehouses);
         List<City> randomWarehousesCities = m.getRandomWarehousesCities(warehouseArrayList, 2);
-        System.out.println(randomWarehousesCities.size());
+        cityArrayList.addAll(randomWarehousesCities);
 
         int mstForMultiWareHouse = m.findMSTForMultiWareHouse(randomWarehousesCities, orders);
-        System.out.println(mstForMultiWareHouse);
-        ArrayList<City> cityArrayList = new ArrayList<>();
+        ArrayList<Tuple<City, City>> mstEdges = m.getMSTEdges();
+
         HashSet<City> cities = m.deliverCities(orders);
-        for (City city : cities) {
-            cityArrayList.add(city);
-        }
-        for (City randomWarehousesCity : randomWarehousesCities) {
-            cities.add(randomWarehousesCity);
-        }
+        cityArrayList.addAll(cities);
 
+        assertTrue(mstForMultiWareHouse !=0);
 
+        randomWarehousesCities = m.getRandomWarehousesCities(warehouseArrayList, 4);
+        cityArrayList.addAll(randomWarehousesCities);
 
+        mstForMultiWareHouse = m.findMSTForMultiWareHouse(randomWarehousesCities, orders);
+//        System.out.println(mstForMultiWareHouse);
         assertTrue(mstForMultiWareHouse !=0);
     }
 
@@ -106,5 +100,6 @@ class MethodTest {
         GoogleMapsGenerator gmg = new GoogleMapsGenerator();
 
         gmg.generatePresentation(cities,"single_deliver_example3",true);
+        assertNotNull(cities);
     }
 }
