@@ -1,10 +1,9 @@
-package src;
+package src.MST;
 
+import src.*;
 import src.DataProcessor.DataProcessor;
 
-import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Method implements IMethods {
 
@@ -124,27 +123,52 @@ public class Method implements IMethods {
     }
 
     @Override
-    public int findMSTForMultiWareHouse(List<City> cities, ArrayList<Order> orders) {
-        deliverCities(orders);
-        List<City> allCities = new ArrayList<>(cities);
-        allCities.addAll(cities);
-        City startingCity = cities.get(0);
+    public int findMSTForMultiWareHouse(ArrayList<Order> orders, int n) {
+        // Get the list of available warehouses
+        ArrayList<Warehouse> warehouseList = this.dp.getMyWareHouseList();
+        HashSet<String> orderedBooks = orderBooks(orders);
+
+        // Select n random warehouses
+        List<City> selectedCities = getRandomWarehousesCities(warehouseList, n);
+
+        // Add all cities in the orders to the set of cities
+        HashSet<City> allCities = deliverCities(orders);
+
+        // Add all cities in the selected warehouses to the set of cities
+        for (City city : selectedCities) {
+            allCities.add(city);
+        }
+
+        // Create a path that starts from the first city in the list of selected cities
         ArrayList<City> path = new ArrayList<>();
+        City startingCity = selectedCities.get(0);
         path.add(startingCity);
 
-        for (City c : allCities) {
-            if (!path.contains(c)) {
-                path.add(c);
+        // Add all the remaining cities to the path
+        for (City city : allCities) {
+            if (!path.contains(city)) {
+                path.add(city);
             }
         }
-        if (!path.contains(startingCity)) path.add(startingCity);
+
+        // Make sure the path ends with the starting city
+        if (!path.contains(startingCity)) {
+            path.add(startingCity);
+        }
+
+        // Generate the MST for the path
         ArrayList<Tuple<City, City>> mstEdges = findMST(path, new ArrayList<>());
+
+        // Calculate the total distance of the MST
         int totalDistance = 0;
         for (Tuple<City, City> edge : mstEdges) {
             totalDistance += edge.getLeft().getConnectingCities().get(edge.getRight().getName()).getRight();
         }
+
         return totalDistance;
     }
+
+
     public ArrayList<Order> getRandomOrder() {
         Warehouse w = this.dp.getRandomWarehouse();
         Random r = new Random();

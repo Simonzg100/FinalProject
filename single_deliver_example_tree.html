@@ -12,26 +12,30 @@
         zoom: 5
       });
 
-      var cityPairsJson = '[["knoxville", "raleigh"], ["raleigh", "virginia beach"], ["knoxville", "akron"], ["akron", "detroit"], ["detroit", "grand rapids"], ["akron", "albany"], ["grand rapids", "omaha"], ["omaha", "tulsa"], ["tulsa", "oklahoma city"], ["oklahoma city", "colorado springs"], ["colorado springs", "salt lake city"], ["salt lake city", "mesa"], ["mesa", "bakersfield"], ["salt lake city", "seattle"]]';
+      var cityPairsJson = '[["fresno", "bakersfield"], ["fresno", "san jose"], ["san jose", "san francisco"], ["bakersfield", "phoenix"], ["phoenix", "mesa"], ["mesa", "tucson"], ["mesa", "denver"], ["denver", "tulsa"], ["tulsa", "memphis"], ["tulsa", "austin"], ["austin", "houston"], ["memphis", "columbia"], ["columbia", "richmond"], ["richmond", "new york"], ["new york", "springfield"], ["new york", "rochester"], ["columbia", "palm bay"], ["palm bay", "miami"]]';
 
       var cityPairs = JSON.parse(cityPairsJson);
 
       var locations = {
-        'raleigh': {lat: 35.8325, lng: -78.6435},
-'oklahoma city': {lat: 35.4676, lng: -97.5136},
-'colorado springs': {lat: 38.8674, lng: -104.7606},
+        'springfield': {lat: 42.1155, lng: -72.5395},
+'san jose': {lat: 37.3019, lng: -121.8486},
+'columbia': {lat: 34.0376, lng: -80.9037},
+'austin': {lat: 30.3004, lng: -97.7522},
+'houston': {lat: 29.7863, lng: -95.3889},
+'miami': {lat: 25.7839, lng: -80.2102},
+'tucson': {lat: 32.1545, lng: -110.8782},
+'memphis': {lat: 35.1046, lng: -89.9773},
+'new york': {lat: 40.6943, lng: -73.9249},
 'tulsa': {lat: 36.1284, lng: -95.9042},
-'virginia beach': {lat: 36.7335, lng: -76.0435},
-'albany': {lat: 42.6664, lng: -73.7987},
-'detroit': {lat: 42.3834, lng: -83.1024},
-'akron': {lat: 41.0798, lng: -81.5219},
-'knoxville': {lat: 35.9692, lng: -83.9496},
-'grand rapids': {lat: 42.962, lng: -85.6562},
-'mesa': {lat: 33.4017, lng: -111.718},
-'salt lake city': {lat: 40.7777, lng: -111.9306},
+'phoenix': {lat: 33.5722, lng: -112.0891},
+'richmond': {lat: 37.5295, lng: -77.4756},
+'san francisco': {lat: 37.7562, lng: -122.443},
+'denver': {lat: 39.7621, lng: -104.8759},
+'palm bay': {lat: 27.955, lng: -80.6627},
 'bakersfield': {lat: 35.3529, lng: -119.0359},
-'omaha': {lat: 41.2627, lng: -96.0522},
-'seattle': {lat: 47.6211, lng: -122.3244},
+'fresno': {lat: 36.7831, lng: -119.7941},
+'mesa': {lat: 33.4017, lng: -111.718},
+'rochester': {lat: 43.168, lng: -77.6162},
 
       };
 
