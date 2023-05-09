@@ -12,7 +12,8 @@ public class Warehouse {
         this.storageMap = new HashMap<>();
     }
 
-
+    public Warehouse() {
+    }
 
     public String getCity() {
         return city;

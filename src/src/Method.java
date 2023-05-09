@@ -23,7 +23,7 @@ public class Method implements IMethods {
     }
 
     @Override
-    public void deliverCities(ArrayList<Order> orders) {
+    public HashSet<City> deliverCities(ArrayList<Order> orders) {
         HashMap<String, City> cityMap = this.dp.getMyCityMap();
         HashMap<String, City> zipMap = new HashMap<>();
         for (City c : cityMap.values()) {
@@ -36,10 +36,11 @@ public class Method implements IMethods {
             City city = zipMap.get(order.getZipcode());
             cities.add(city);
         }
+        return cities;
     }
 
     @Override
-    public void deliverFromOneWareHouse(ArrayList<Order> orders) {
+    public HashSet<Warehouse> delWareHouse(ArrayList<Order> orders) {
         ArrayList<Warehouse> myWarehouseList = this.dp.getMyWareHouseList();
         for (Warehouse wareHouse : myWarehouseList) {
             HashMap<String, Integer> storageMap = wareHouse.getStorageMap();
@@ -48,109 +49,40 @@ public class Method implements IMethods {
                 warehouses.add(wareHouse);
             }
         }
+        return warehouses;
     }
-
     @Override
-    public void orderBooks(ArrayList<Order> orders) {
+    public HashSet<String> orderBooks(ArrayList<Order> orders) {
         for (Order order : orders) {
             ArrayList<Book> books = order.getBookList();
             for (Book book : books) {
                 this.orderedBooks.add(book.getIsbn());
             }
         }
+        return orderedBooks;
     }
 
-    public ArrayList<Tuple<City, City>> deliverFromSingleWarehouse() {
-        Warehouse w = this.dp.getRandomWarehouse();
-        Random r = new Random();
-        ArrayList<Order> orders = this.dp.generateOrderFromOneWarehouse(w);
-        deliverCities(orders);
+    public Warehouse findBestWarehouseForMST(HashSet<Warehouse> warehouseList, ArrayList<Order> orders) {
+        Warehouse bestWarehouse = null;
+        double minTotalDistance = Double.MAX_VALUE;
 
-        City startingCity = this.dp.getMyCityMap().get(w.getCity());
-
-
-        ArrayList<City> path = new ArrayList<>();
-
-
-        path.add(startingCity);
-        this.cities.add(startingCity);
-
-        ArrayList<Tuple<City, City>> tuples = this.findMST(path, new ArrayList<>());
-        return tuples;
-
-//        for (City c : this.cities) {
-//            path.add(c);
-//        }
-//        if (!path.contains(startingCity)) path.add(startingCity);
-//
-//
-//
-//
-//
-//        Collections.sort(path, new Comparator<City>() {
-//            @Override
-//            public int compare(City o1, City o2) {
-//                int longitude1 = (int) (o1.getLongitude() * 1000);
-//                int longitude2 = (int) (o2.getLongitude() * 1000);
-//                int latitude1 = (int) (o1.getLatitude() * 1000);
-//                int latitude2 = (int) (o2.getLatitude() * 1000);
-//                if (longitude1 == longitude2) {
-//                    return latitude1 - latitude2;
-//                } else {
-//                    return longitude1 - longitude2;
-//                }
-//            }
-//        });
-//
-//        double avgLong = 0;
-//        double avgLat = 0;
-//        for (City city : path) {
-//            avgLong += city.getLongitude();
-//            avgLat += city.getLatitude();
-//        }
-//        avgLat = avgLat / path.size();
-//        avgLong = avgLong / path.size();
-//
-    }
-
-    public ArrayList<City> deliverFromSingleWarehouseRoute() {
-        Warehouse w = this.dp.getRandomWarehouse();
-        Random r = new Random();
-        ArrayList<Order> orders = this.dp.generateOrderFromOneWarehouse(w);
-        deliverCities(orders);
-
-        City startingCity = this.dp.getMyCityMap().get(w.getCity());
-
-
-        ArrayList<City> path = new ArrayList<>();
-
-
-        path.add(startingCity);
-        this.cities.add(startingCity);
-
-        for (City c : this.cities) {
-            path.add(c);
-        }
-        if (!path.contains(startingCity)) path.add(startingCity);
-
-
-        Collections.sort(path, new Comparator<City>() {
-            @Override
-            public int compare(City o1, City o2) {
-                int longitude1 = (int) (o1.getLongitude() * 1000);
-                int longitude2 = (int) (o2.getLongitude() * 1000);
-                int latitude1 = (int) (o1.getLatitude() * 1000);
-                int latitude2 = (int) (o2.getLatitude() * 1000);
-                if (longitude1 == longitude2) {
-                    return latitude1 - latitude2;
-                } else {
-                    return longitude1 - longitude2;
-                }
+        for (Warehouse warehouse : warehouseList) {
+            deliverCities(orders);
+            City startingCity = this.dp.getMyCityMap().get(warehouse.getCity());
+            ArrayList<City> path = new ArrayList<>();
+            path.add(startingCity);
+            this.cities.add(startingCity);
+            ArrayList<Tuple<City, City>> mstEdges = findMST(path, new ArrayList<>());
+            double totalDistance = 0;
+            for (Tuple<City, City> edge : mstEdges) {
+                totalDistance += edge.getLeft().getConnectingCities().get(edge.getRight().getName()).getRight();
             }
-        });
-
-        return path;
-
+            if (totalDistance < minTotalDistance) {
+                minTotalDistance = totalDistance;
+                bestWarehouse = warehouse;
+            }
+        }
+        return bestWarehouse;
     }
 
     private ArrayList<Tuple<City, City>> findMST(ArrayList<City> list, ArrayList<Tuple<City, City>> tuples) {
@@ -180,172 +112,43 @@ public class Method implements IMethods {
     }
 
 
+    public List<City> getRandomWarehousesCities(List<Warehouse> availableWarehouses, int n) {
+        List<City> selectedCities = new ArrayList<>();
+        Collections.shuffle(availableWarehouses);
+        for (int i = 0; i < n; i++) {
+            Warehouse warehouse = availableWarehouses.get(i);
+            City city = this.dp.getMyCityMap().get(warehouse.getCity());
+            selectedCities.add(city);
+        }
+        return selectedCities;
+    }
 
     @Override
-    public String deliverBooksFromOneWareHouse() {
+    public int findMSTForMultiWareHouse(List<City> cities, ArrayList<Order> orders) {
+        deliverCities(orders);
+        List<City> allCities = new ArrayList<>(cities);
+        allCities.addAll(cities);
+        City startingCity = cities.get(0);
+        ArrayList<City> path = new ArrayList<>();
+        path.add(startingCity);
+
+        for (City c : allCities) {
+            if (!path.contains(c)) {
+                path.add(c);
+            }
+        }
+        if (!path.contains(startingCity)) path.add(startingCity);
+        ArrayList<Tuple<City, City>> mstEdges = findMST(path, new ArrayList<>());
+        int totalDistance = 0;
+        for (Tuple<City, City> edge : mstEdges) {
+            totalDistance += edge.getLeft().getConnectingCities().get(edge.getRight().getName()).getRight();
+        }
+        return totalDistance;
+    }
+    public ArrayList<Order> getRandomOrder() {
         Warehouse w = this.dp.getRandomWarehouse();
         Random r = new Random();
-        ArrayList<Order> orders = this.dp.generateOrderFromOneWarehouse(w);
-        deliverCities(orders);
-        deliverFromOneWareHouse(orders);
-
-        List<String[]> edges = new ArrayList<>();
-
-        for (City city : cities) {
-            HashMap<String, Tuple<City, Double>> connectingCities = city.getConnectingCities();
-            for (Map.Entry<String, Tuple<City, Double>> map : connectingCities.entrySet()) {
-                String name = map.getKey();
-                Tuple<City, Double> value = map.getValue();
-                Double right = value.getRight(); // distance
-                // create the graph.
-                edges.add(new String[] {city.getName(),name,Double.toString(right)});
-            }
-        }
-
-        String bestWarehouse = null;
-        double minTotalWeight = Double.MAX_VALUE;
-
-        for (Warehouse warehouse : warehouses) {
-            List<String[]> warehouseEdges = new ArrayList<>(edges); // Clone the edges list
-            String warehouseCity = warehouse.getCity();
-            for (City city : cities) {
-                HashMap<String, Tuple<City, Double>> connectingCities = city.getConnectingCities();
-                Tuple<City, Double> cityDoubleTuple = connectingCities.get(warehouseCity);
-                Double distance = cityDoubleTuple.getRight();
-                warehouseEdges.add(new String[]{warehouseCity, city.getName(), Double.toString(distance)});
-            }
-            warehouseEdges.sort((a, b) ->
-                    (int) (Double.parseDouble(a[2]) - Double.parseDouble(b[2]))
-            );
-            int citySizes = cities.size();
-            UnionFind uf = new UnionFind(citySizes + 1);
-            double totalWeight = 0;
-            int edgeCount = 0;
-
-            for (String[] edge : warehouseEdges) {
-                if (uf.union(edge[0], edge[1])) {
-                    totalWeight += Double.parseDouble(edge[2]);
-                    edgeCount++;
-
-                    if (edgeCount == citySizes) {
-                        break; // All cities are connected
-                    }
-                }
-            }
-            if (totalWeight < minTotalWeight) {
-                minTotalWeight = totalWeight;
-                bestWarehouse = warehouseCity;
-            }
-        }
-
-        return bestWarehouse;
+        return this.dp.generateOrderFromOneWarehouse(w);
     }
 
-
-    @Override
-    public List<String> deliverBooksFromMultiWareHouse(ArrayList<Order> orders) {
-        List<List<Warehouse>> warehouseCombinations = deliverFromMultiWareHouse();
-        List<String> bestWarehouses = new ArrayList<>();
-        double bestTotalDistance = Double.MAX_VALUE;
-
-        for (List<Warehouse> combination : warehouseCombinations) {
-            List<String[]> edges = createEdges(combination);
-            double totalDistance = calculateMST(combination.size(), edges);
-
-            if (totalDistance < bestTotalDistance) {
-                bestTotalDistance = totalDistance;
-                bestWarehouses = combination.stream().map(Warehouse::getCity).collect(Collectors.toList());
-            }
-        }
-
-        return bestWarehouses;
-    }
-
-    private List<String[]> createEdges(List<Warehouse> combination) {
-        List<String[]> edges = new ArrayList<>();
-
-        for (Warehouse warehouse : combination) {
-            String warehouseCity = warehouse.getCity();
-            for (City city : cities) {
-                HashMap<String, Tuple<City, Double>> connectingCities = city.getConnectingCities();
-                Tuple<City, Double> cityDoubleTuple = connectingCities.get(warehouseCity);
-                Double distance = cityDoubleTuple.getRight();
-                edges.add(new String[]{warehouseCity, city.getName(), Double.toString(distance)});
-            }
-        }
-
-        return edges;
-    }
-
-    private double calculateMST(int warehouseCount, List<String[]> edges) {
-        edges.sort((a, b) -> (int) (Double.parseDouble(a[2]) - Double.parseDouble(b[2])));
-        UnionFind uf = new UnionFind(warehouseCount + cities.size());
-
-        // Add cities and warehouses to the UnionFind
-        for (City city : cities) {
-            uf.add(city.getName());
-        }
-        for (String[] edge : edges) {
-            uf.add(edge[0]);
-        }
-        double totalWeight = 0;
-        int edgeCount = 0;
-
-        for (String[] edge : edges) {
-            if (uf.union(edge[0], edge[1])) {
-                totalWeight += Double.parseDouble(edge[2]);
-                edgeCount++;
-
-                if (edgeCount == cities.size()) {
-                    break;
-                }
-            }
-        }
-        return totalWeight;
-    }
-
-
-    @Override
-    public List<List<Warehouse>> deliverFromMultiWareHouse() {
-        ArrayList<Order> orders = this.dp.generateOrderWithMultipleBooks();
-        orderBooks(orders);
-        ArrayList<Warehouse> myWarehouseList = dp.getMyWareHouseList();
-        List<List<Warehouse>> warehouseCombinations = new ArrayList<>();
-        List<Warehouse> currentCombination = new ArrayList<>();
-        findCombinations(warehouseCombinations, currentCombination, myWarehouseList, orderedBooks, 0);
-        return warehouseCombinations;
-    }
-
-    private void findCombinations(List<List<Warehouse>> warehouseCombinations, List<Warehouse> currentCombination,
-                                  ArrayList<Warehouse> myWarehouseList, HashSet<String> orderBooks, int index) {
-        if (isSufficient(currentCombination, orderBooks)) {
-            warehouseCombinations.add(new ArrayList<>(currentCombination));
-            return;
-        }
-
-        if (index >= myWarehouseList.size()) {
-            return;
-        }
-
-        // With the current warehouse
-        Warehouse warehouse = myWarehouseList.get(index);
-        currentCombination.add(warehouse);
-        findCombinations(warehouseCombinations, currentCombination, myWarehouseList, orderBooks, index + 1);
-
-        // Without the current warehouse
-        currentCombination.remove(currentCombination.size() - 1);
-        findCombinations(warehouseCombinations, currentCombination, myWarehouseList, orderBooks, index + 1);
-    }
-
-    private boolean isSufficient(List<Warehouse> currentCombination, HashSet<String> orderBooks) {
-        HashSet<String> coveredBooks = new HashSet<>();
-        for (Warehouse warehouse : currentCombination) {
-            coveredBooks.addAll(warehouse.getStorageMap().keySet());
-        }
-        return coveredBooks.containsAll(orderBooks);
-    }
-
-    public HashSet<City> getCities() {
-        return cities;
-    }
 }

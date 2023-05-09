@@ -12,31 +12,26 @@
         zoom: 5
       });
 
-      var cityPairsJson = '[["hartford", "bridgeport"], ["bridgeport", "queens"], ["hartford", "albany"], ["albany", "rochester"], ["rochester", "cleveland"], ["cleveland", "columbus"], ["queens", "richmond"], ["columbus", "milwaukee"], ["richmond", "charleston"], ["charleston", "orlando"], ["orlando", "cape coral"], ["charleston", "birmingham"], ["milwaukee", "kansas city"], ["kansas city", "oklahoma city"], ["oklahoma city", "denver"], ["denver", "las vegas"], ["las vegas", "fresno"], ["las vegas", "san diego"], ["fresno", "seattle"]]';
+      var cityPairsJson = '[["knoxville", "raleigh"], ["raleigh", "virginia beach"], ["knoxville", "akron"], ["akron", "detroit"], ["detroit", "grand rapids"], ["akron", "albany"], ["grand rapids", "omaha"], ["omaha", "tulsa"], ["tulsa", "oklahoma city"], ["oklahoma city", "colorado springs"], ["colorado springs", "salt lake city"], ["salt lake city", "mesa"], ["mesa", "bakersfield"], ["salt lake city", "seattle"]]';
 
       var cityPairs = JSON.parse(cityPairsJson);
 
       var locations = {
-        'cape coral': {lat: 26.6446, lng: -81.9956},
-'rochester': {lat: 43.168, lng: -77.6162},
-'queens': {lat: 40.7498, lng: -73.7976},
-'fresno': {lat: 36.7831, lng: -119.7941},
-'richmond': {lat: 37.5295, lng: -77.4756},
-'denver': {lat: 39.7621, lng: -104.8759},
-'milwaukee': {lat: 43.0642, lng: -87.9673},
-'albany': {lat: 42.6664, lng: -73.7987},
-'columbus': {lat: 39.9862, lng: -82.985},
+        'raleigh': {lat: 35.8325, lng: -78.6435},
 'oklahoma city': {lat: 35.4676, lng: -97.5136},
-'san diego': {lat: 32.8312, lng: -117.1225},
-'charleston': {lat: 32.8153, lng: -79.9628},
-'hartford': {lat: 41.7661, lng: -72.6834},
+'colorado springs': {lat: 38.8674, lng: -104.7606},
+'tulsa': {lat: 36.1284, lng: -95.9042},
+'virginia beach': {lat: 36.7335, lng: -76.0435},
+'albany': {lat: 42.6664, lng: -73.7987},
+'detroit': {lat: 42.3834, lng: -83.1024},
+'akron': {lat: 41.0798, lng: -81.5219},
+'knoxville': {lat: 35.9692, lng: -83.9496},
+'grand rapids': {lat: 42.962, lng: -85.6562},
+'mesa': {lat: 33.4017, lng: -111.718},
+'salt lake city': {lat: 40.7777, lng: -111.9306},
+'bakersfield': {lat: 35.3529, lng: -119.0359},
+'omaha': {lat: 41.2627, lng: -96.0522},
 'seattle': {lat: 47.6211, lng: -122.3244},
-'birmingham': {lat: 33.5277, lng: -86.7987},
-'kansas city': {lat: 39.1239, lng: -94.5541},
-'orlando': {lat: 28.4772, lng: -81.3369},
-'bridgeport': {lat: 41.1918, lng: -73.1953},
-'las vegas': {lat: 36.2333, lng: -115.2654},
-'cleveland': {lat: 41.4767, lng: -81.6804},
 
       };
 

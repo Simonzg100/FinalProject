@@ -9,7 +9,6 @@ public class UnionFind {
     private HashMap<String, String> parent;
 
     public UnionFind(int n) {
-        this.count = n;
         parent = new HashMap<>(n);
     }
 
@@ -42,9 +41,11 @@ public class UnionFind {
     }
 
     public String find(String x) {
+        System.out.println("Finding: " + x);
         if (!parent.get(x).equals(x)) {
             parent.put(x, find(parent.get(x)));
         }
+        System.out.println("Found parent: " + parent.get(x));
         return parent.get(x);
     }
 
