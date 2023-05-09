@@ -2,6 +2,7 @@ package src.Autocomplete;
 
 import src.Book;
 import src.DataProcessor.DataProcessor;
+import src.Tuple;
 
 import java.util.*;
 
@@ -23,7 +24,7 @@ public class Autocomplete implements IAutocomplete{
     public void addWord(Book book, long weight) {
         String bookName = book.getName();
         String author = book.getAuthor();
-        String category = book.getAuthor();
+        String category = book.getCategory();
 
         String[] strArr = {bookName, author, category};
 
@@ -151,6 +152,79 @@ public class Autocomplete implements IAutocomplete{
                 }
             }
         }
+
+        if (iTermArrayList.size() == 0) return getAutocorrect(prefix, indicator);
         return iTermArrayList;
+    }
+
+    private List<ITerm> getAutocorrect (String input, int indicator) {
+        List<Tuple<ITerm, Integer>> termDistances = new ArrayList<>();
+        input = input.replaceAll("[^a-zA-Z]", "").strip().toLowerCase();
+        Queue<Node> q = new LinkedList<>();
+        for (int i = input.length(); i > 0; i--) {
+            Node temp = this.getSubTrie(input.substring(0,i), indicator);
+            if (temp == null) continue;
+            if (temp.getPrefixes()!= 0) {
+                q.add(temp);
+                break;
+            }
+        }
+        while (!q.isEmpty()) {
+            Node temp = q.poll();
+            if (temp.getWords() == 1) {
+                int distance = calculateLevenshteinDistance(input, temp.getTerm().getTerm());
+                termDistances.add(new Tuple<ITerm, Integer>(temp.getTerm(), distance));
+            }
+
+            if (temp.getReferences() != null) {
+                for (int i = 0; i < 26; i++) {
+                    if (temp.getReferences()[i] != null) {
+                        q.add(temp.getReferences()[i]);
+                    }
+                }
+            }
+        }
+        termDistances.sort(Comparator.comparingInt(Tuple::getRight));
+
+        ArrayList<ITerm> iTermArrayList = new ArrayList<>();
+
+        for (int i = 0; i < k; i++) {
+            if (i > termDistances.size()) break;
+            iTermArrayList.add(termDistances.get(i).getLeft());
+        }
+
+        return iTermArrayList;
+
+    }
+
+    private int calculateLevenshteinDistance(String a, String b) {
+        // Implementation of the Levenshtein distance
+        a = a.replaceAll("[^a-zA-Z]", "").strip().toLowerCase();
+        b = b.replaceAll("[^a-zA-Z]", "").strip().toLowerCase();
+
+        int[][] dp = new int[a.length() + 1][b.length() + 1];
+
+        for (int i = 0; i <= a.length(); i++) {
+            for (int j = 0; j <= b.length(); j++) {
+                if (i == 0) {
+                    dp[i][j] = j; // Min. operations = j
+                } else if (j == 0) {
+                    dp[i][j] = i; // Min. operations = i
+                } else {
+                    dp[i][j] = min(dp[i - 1][j - 1] + costOfSubstitution(a.charAt(i - 1), b.charAt(j - 1)),
+                            dp[i - 1][j] + 1, dp[i][j - 1] + 1);
+                }
+            }
+        }
+
+        return dp[a.length()][b.length()];
+    }
+
+    private int costOfSubstitution(char a, char b) {
+        return a == b ? 0 : 1;
+    }
+
+    private int min(int... numbers) {
+        return Arrays.stream(numbers).min().orElse(Integer.MAX_VALUE);
     }
 }

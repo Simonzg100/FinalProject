@@ -129,23 +129,21 @@ public class Method implements IMethods {
         this.cities.add(startingCity);
 
         for (City c : this.cities) {
+            City.AVG_LONGITUDE += c.getLongitude();
+            City.AVG_LATITUDE += c.getLatitude();
             path.add(c);
         }
+        City.AVG_LONGITUDE = City.AVG_LONGITUDE / cities.size();
+        City.AVG_LATITUDE = City.AVG_LATITUDE / cities.size();
         if (!path.contains(startingCity)) path.add(startingCity);
 
 
         Collections.sort(path, new Comparator<City>() {
             @Override
             public int compare(City o1, City o2) {
-                int longitude1 = (int) (o1.getLongitude() * 1000);
-                int longitude2 = (int) (o2.getLongitude() * 1000);
-                int latitude1 = (int) (o1.getLatitude() * 1000);
-                int latitude2 = (int) (o2.getLatitude() * 1000);
-                if (longitude1 == longitude2) {
-                    return latitude1 - latitude2;
-                } else {
-                    return longitude1 - longitude2;
-                }
+                double angle1 = Math.atan2(o1.getLatitude() - City.AVG_LATITUDE, o1.getLongitude() - City.AVG_LONGITUDE);
+                double angle2 = Math.atan2(o2.getLatitude() - City.AVG_LATITUDE, o2.getLongitude() - City.AVG_LONGITUDE);
+                return Double.compare(angle2, angle1);
             }
         });
 
