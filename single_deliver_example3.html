@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display Path and Names on Google Map</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIrqqR5a8-SBGKJfc-dnHwHqkroJwY1IU&callback=initMap" async defer></script>
+  <script>
+    var map;
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 37.8333, lng: -98.5833},
+        zoom: 5
+      });
+
+      var locations = [
+        {lat: 37.3019, lng: -121.8486, name: 'san jose'},
+{lat: 40.2457, lng: -111.6457, name: 'provo'},
+{lat: 31.8479, lng: -106.4309, name: 'el paso'},
+{lat: 29.4658, lng: -98.5253, name: 'san antonio'},
+{lat: 35.4676, lng: -97.5136, name: 'oklahoma city'},
+{lat: 32.7811, lng: -97.3473, name: 'fort worth'},
+{lat: 32.7936, lng: -96.7662, name: 'dallas'},
+{lat: 32.7936, lng: -96.7662, name: 'dallas'},
+{lat: 39.1239, lng: -94.5541, name: 'kansas city'},
+{lat: 30.0687, lng: -89.9288, name: 'new orleans'},
+{lat: 43.0642, lng: -87.9673, name: 'milwaukee'},
+{lat: 36.1715, lng: -86.7843, name: 'nashville'},
+{lat: 33.7627, lng: -84.4224, name: 'atlanta'},
+{lat: 35.9692, lng: -83.9496, name: 'knoxville'},
+{lat: 42.3834, lng: -83.1024, name: 'detroit'},
+{lat: 27.9942, lng: -82.4451, name: 'tampa'},
+{lat: 26.6446, lng: -81.9956, name: 'cape coral'},
+{lat: 35.2080, lng: -80.8304, name: 'charlotte'},
+{lat: 42.9016, lng: -78.8487, name: 'buffalo'},
+{lat: 36.7335, lng: -76.0435, name: 'virginia beach'},
+{lat: 40.6943, lng: -73.9249, name: 'new york'},
+{lat: 41.3112, lng: -72.9246, name: 'new haven'},
+{lat: 41.7661, lng: -72.6834, name: 'hartford'},
+
+      ];
+
+      var pathCoordinates = locations.map(function(location) {
+        return new google.maps.LatLng(location.lat, location.lng);
+      });
+
+      var path = new google.maps.Polyline({
+        path: pathCoordinates,
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+
+      path.setMap(map);
+
+      locations.forEach(function(location) {
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(location.lat, location.lng),
+          map: map
+        });
+
+        var infoWindow = new google.maps.InfoWindow({
+          content: location.name
+        });
+
+        marker.addListener('click', function() {
+          infoWindow.open(map, marker);
+        });
+      });
+    }
+  </script>
+  <style>
+    #map {
+      height: 100%;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+</body>
+</html>
