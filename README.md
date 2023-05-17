@@ -1,8 +1,4 @@
 # Warehouse Order Management and Distribution System
-## Collabration: 
-Zechuan(Zac) YANG         zacyang@seas.upenn.edu;   
-Wei(Simon) ZHANG          wei14@seas.upenn.edu;  
-Meiyuan(Claire) SHEN      myshen@seas.upenn.edu;   
 
 ## Proposal
 
